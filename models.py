@@ -4,7 +4,8 @@ import json
 import os
 
 database_name = "capstone"
-database_path = os.environ["DATABASE_URL"]
+database_path ="postgres://{}:{}@{}/{}".format('postgres', '','localhost:5432', database_name)
+#os.environ["DATABASE_URL"]
 
 db = SQLAlchemy()
 
@@ -34,6 +35,10 @@ class Person(db.Model):
   def __init__(self, name, catchphrase=""):
     self.name = name
     self.catchphrase = catchphrase
+
+  def insert(self):
+    db.session.add(self)
+    db.session.commit()
 
   def format(self):
     return {
