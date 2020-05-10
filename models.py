@@ -4,9 +4,7 @@ import json
 import os
 
 database_name = "capstone"
-database_path =os.environ["DATABASE_URL"]
-
-#"postgres://{}:{}@{}/{}".format('postgres', '','localhost:5432', database_name)
+database_path = os.environ["DATABASE_URL"] if os.environ.get("DEBUG", True) == False else "postgres://{}:{}@{}/{}".format('postgres', '','localhost:5432', database_name)
 
 db = SQLAlchemy()
 
@@ -26,16 +24,18 @@ def setup_db(app, database_path=database_path):
 Person
 Have title and release year
 '''
-class Person(db.Model):  
-  __tablename__ = 'People'
+class Agent(db.Model):  
+  __tablename__ = 'Agents'
 
   id = Column(Integer, primary_key=True)
   name = Column(String)
-  catchphrase = Column(String)
+  age = Column(Integer)
+  picture = Column(String)
 
-  def __init__(self, name, catchphrase=""):
+  def __init__(self, name, age, picture):
     self.name = name
-    self.catchphrase = catchphrase
+    self.age = age
+    self.picture = picture
 
   def insert(self):
     db.session.add(self)
@@ -45,4 +45,6 @@ class Person(db.Model):
     return {
       'id': self.id,
       'name': self.name,
-      'catchphrase': self.catchphrase}
+      'age': self.age,
+      'picture': self.picture
+      }

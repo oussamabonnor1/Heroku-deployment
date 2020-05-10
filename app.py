@@ -2,7 +2,7 @@ import os
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
-from models import setup_db, db, Person
+from models import setup_db, db, Agent
 
 def create_app(test_config=None):
 
@@ -12,23 +12,23 @@ def create_app(test_config=None):
 
     @app.route('/')
     def get_greeting():
-        excited = os.environ['EXCITED']
-        greeting = "Hello" 
+        excited = os.environ.get('EXCITED',False)
+        greeting = "Welcome to the houses platform" 
         if excited == 'true': greeting = greeting + "!!!!!"
         return greeting
 
-    @app.route('/coolkids')
+    @app.route('/get-agents')
     def be_cool():
-        people = Person.query.all()
-        formatted_people = [person.format() for person in people]
+        agents = Agent.query.all()
+        formatted_agents = [agent.format() for agent in agents]
         return jsonify({
-            "people":formatted_people
+            "agents":formatted_agents
         })
 
-    @app.route('/create-person', methods=['POST'])
-    def create_person():
+    @app.route('/create-agent', methods=['POST'])
+    def create_agent():
         body = request.get_json()
-        person = Person(name=body.get('name',''), catchphrase=body.get('catchphrase', ''))
+        person = Agent(name=body.get('name',''), age=body.get('age', ''))
         person.insert()
         return be_cool()
 
