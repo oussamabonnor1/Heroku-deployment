@@ -18,7 +18,7 @@ def create_app(test_config=None):
         return greeting
 
     @app.route('/get-agents')
-    def be_cool():
+    def get_agents():
         agents = Agent.query.all()
         formatted_agents = [agent.format() for agent in agents]
         return jsonify({
@@ -28,9 +28,9 @@ def create_app(test_config=None):
     @app.route('/create-agent', methods=['POST'])
     def create_agent():
         body = request.get_json()
-        person = Agent(name=body.get('name',''), age=body.get('age', ''))
+        person = Agent(name=body.get('name',''), age=body.get('age', ''), picture='')
         person.insert()
-        return be_cool()
+        return get_agents()
 
 
 
