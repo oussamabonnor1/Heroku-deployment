@@ -5,7 +5,7 @@ import os
 
 database_name = "capstone"
 print(os.environ.get("DEBUG", 'false'))
-database_path = os.environ["DATABASE_URL"] if os.environ.get("DEBUG", 'false') == 'true' else "postgres://{}:{}@{}/{}".format('postgres', '','localhost:5432', database_name)
+database_path = os.environ["DATABASE_URL"] 
 
 db = SQLAlchemy()
 
