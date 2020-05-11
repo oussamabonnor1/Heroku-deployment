@@ -40,11 +40,47 @@ class Agent(db.Model):
   def insert(self):
     db.session.add(self)
     db.session.commit()
+  
+  def update(self):
+    db.session.commit()
+
+  def delete(self):
+    db.session.delete(self)
+    db.session.commit()
 
   def format(self):
     return {
       'id': self.id,
       'name': self.name,
       'age': self.age,
+      'picture': self.picture
+      }
+
+class House(db.Model):  
+  __tablename__ = 'Houses'
+
+  id = Column(Integer, primary_key=True)
+  name = Column(String)
+  rooms = Column(Integer)
+  price = Column(Integer)
+  picture = Column(String)
+  agent_id = db.Column(db.Integer, db.ForeignKey('Agents.id'), primary_key=True)
+
+  def __init__(self, name, rooms, price, picture):
+    self.name = name
+    self.rooms = rooms
+    self.price = price
+    self.picture = picture
+
+  def insert(self):
+    db.session.add(self)
+    db.session.commit()
+
+  def format(self):
+    return {
+      'id': self.id,
+      'name': self.name,
+      'rooms': self.rooms,
+      'price': self.price,
       'picture': self.picture
       }
