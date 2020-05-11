@@ -26,6 +26,16 @@ def create_app(test_config=None):
             "agents":formatted_agents
         })
 
+    @app.route('/get-agent/<id>')
+    def get_agent(id):
+        selected_agent = Agent.query.filter(Agent.id == id).one_or_none()
+        if(selected_agent is None):
+            return not_found(404)
+        else: 
+            return jsonify({
+                "agents":selected_agent.format()
+            })
+
     @app.route('/create-agent', methods=['POST'])
     def create_agent():
         body = request.get_json()
