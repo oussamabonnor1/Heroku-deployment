@@ -2,7 +2,7 @@ import os
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
-from models import setup_db, db, Agent
+from models import setup_db, db, Agent, House
 import sys
 
 def create_app(test_config=None):
@@ -14,10 +14,12 @@ def create_app(test_config=None):
     @app.route('/')
     def get_greeting():
         excited = os.environ.get('EXCITED',False)
-        greeting = "Welcome to the houses platform" 
-        if excited == 'true': greeting = greeting + "!!!!!"
+        greeting = "Welcome to the houses platform " 
+        greeting += "Endpoints: get-agents, get-houses"
         return greeting
 
+
+    #================== Agents Endpoints =====================
     @app.route('/get-agents')
     def get_agents():
         agents = Agent.query.all()
@@ -82,6 +84,83 @@ def create_app(test_config=None):
                 db.session.rollback()
                 return unprocessable(422)
             return get_agents()
+
+
+    #================== Houses Endpoints =====================
+    @app.route('/get-houses')
+    def get_houses():
+        houses = House.query.all()
+        formatted_houses = [house.format() for house in houses]
+        return jsonify({
+            "houses":formatted_houses
+        })
+
+    @app.route('/get-house/<id>')
+    def get_house(id):
+        selected_house = House.query.filter(House.id == id).one_or_none()
+        if(selected_house is None):
+            return not_found(404)
+        else: 
+            return jsonify({
+                "agents":selected_house.format()
+            })
+
+    @app.route('/create-house', methods=['POST'])
+    def create_house():
+        body = request.get_json()
+        try:
+            house = House(
+                name=body.get('name',''),
+                rooms=body.get('rooms', ''),
+                price=body.get('price', ''),
+                picture=body.get('picture', ''),
+                agent_id = body.get('agent', -1))
+            house.insert()
+        except:
+            print(sys.exc_info())
+            db.session.rollback()
+            return unprocessable(422)
+        return get_houses()
+
+    @app.route('/update-house/<id>', methods=['PUT'])
+    def update_house(id):
+        selected_house = House.query.filter(House.id == id).one_or_none()
+        if selected_house is None:
+            return not_found(404)
+        else:
+            body = request.get_json()
+            name = body.get('name',selected_house.name)
+            rooms = body.get('rooms',selected_house.rooms)
+            price = body.get('price',selected_house.price)
+            picture = body.get('picture',selected_house.picture)
+            agent_id = body.get('agent',selected_house.agent_id)
+            try:
+                selected_house.name = name 
+                selected_house.rooms = rooms
+                selected_house.price = price
+                selected_house.picture = picture
+                selected_house.agent_id = agent_id
+                selected_house.update()
+            except:
+                print(sys.exc_info())
+                db.session.rollback()
+                return unprocessable(422)
+            return get_houses()
+
+    @app.route('/delete-house/<id>', methods=['DELETE'])
+    def delete_house(id):
+        selected_house = House.query.filter(House.id == id).one_or_none()
+        if selected_house is None:
+            return not_found(404)
+        else:
+            try:
+                selected_house.delete()
+            except:
+                print(sys.exc_info())
+                db.session.rollback()
+                return unprocessable(422)
+            return get_houses()
+
 
     #=================ERROR HANDLERS==================#
     @app.errorhandler(422)

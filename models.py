@@ -20,10 +20,6 @@ def setup_db(app, database_path=database_path):
     db.create_all()
 
 
-'''
-Person
-Have title and release year
-'''
 class Agent(db.Model):  
   __tablename__ = 'Agents'
 
@@ -64,16 +60,24 @@ class House(db.Model):
   rooms = Column(Integer)
   price = Column(Integer)
   picture = Column(String)
-  agent_id = db.Column(db.Integer, db.ForeignKey('Agents.id'), primary_key=True)
+  agent_id = db.Column(db.Integer, db.ForeignKey('Agents.id'))
 
-  def __init__(self, name, rooms, price, picture):
+  def __init__(self, name, rooms, price, picture, agent_id):
     self.name = name
     self.rooms = rooms
     self.price = price
     self.picture = picture
+    self.agent_id = agent_id
 
   def insert(self):
     db.session.add(self)
+    db.session.commit()
+
+  def update(self):
+    db.session.commit()
+
+  def delete(self):
+    db.session.delete(self)
     db.session.commit()
 
   def format(self):
@@ -82,5 +86,6 @@ class House(db.Model):
       'name': self.name,
       'rooms': self.rooms,
       'price': self.price,
+      'agent': self.agent_id,
       'picture': self.picture
-      }
+    }
