@@ -59,7 +59,19 @@ def create_app(test_config=None):
                 return unprocessable(422)
             return get_agents()
 
-
+    @app.route('/delete-agent/<id>', methods=['DELETE'])
+    def delete_agent(id):
+        selected_agent = Agent.query.filter(Agent.id == id).one_or_none()
+        if selected_agent is None:
+            return not_found(404)
+        else:
+            try:
+                selected_agent.delete()
+            except:
+                print(sys.exc_info())
+                db.session.rollback()
+                return unprocessable(422)
+            return get_agents()
 
     #=================ERROR HANDLERS==================#
     @app.errorhandler(422)
