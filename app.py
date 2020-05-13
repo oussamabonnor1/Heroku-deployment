@@ -8,11 +8,9 @@ from auth.auth import requires_auth, AuthError
 
 def create_app(test_config=None):
 
-    login_url = "https://sagemodeboy.eu.auth0.com/authorize?audience=CapstoneAPI&response_type=token&client_id=aotIkvWv0Kf7HikQEeW0EimtfA1RqPrN&redirect_uri=http://127.0.0.1:5000/welcome"
-    
-    original_token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik56SkdOekF6UXpORFJqaENNekV6UlRCQlJVSTFSa1JEUkVKQ016VkZRek5DUWpCQk9FVXhOdyJ9.eyJpc3MiOiJodHRwczovL3NhZ2Vtb2RlYm95LmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJnb29nbGUtb2F1dGgyfDExNzEzOTAzMTUzNjk3NzUxMTQxMiIsImF1ZCI6WyJDYXBzdG9uZUFQSSIsImh0dHBzOi8vc2FnZW1vZGVib3kuZXUuYXV0aDAuY29tL3VzZXJpbmZvIl0sImlhdCI6MTU4OTQxMTMzNSwiZXhwIjoxNTg5NDgzMzM1LCJhenAiOiJhb3RJa3ZXdjBLZjdIaWtRRWVXMEVpbXRmQTFScVByTiIsInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwiLCJwZXJtaXNzaW9ucyI6WyJkZWxldGU6YWdlbnRzIiwiZ2V0OmFnZW50cyIsInBvc3Q6YWdlbnRzIiwicHV0OmFnZW50cyJdfQ.lbh-bEnAfRDiJcO0VVRA-PpJ2BgrzWqeKsIKY_WmjiegLtJ-uajgShGuNXVV7fNtkqqLH187drxIrPekRQQDffr79lXNCoeGjp6XAJ1rnToZNLbpPBLDROb0jFs5yP2FDLBITFrUNc-wAg-5qIwIRr5A3NO350SBb2-YwjPjvr6wZU38TySpMxY8lBF6Y6jd4dmaoJ1J6gRzSFaAnoYBNurBuHzfsxpa5dLcIoXstXqmnYrroF5NNB_33qb_hbRQrtaahVsc9czHyhb8Abu3jeg7eIndk0CTq55nnDfv067sx9SXp2QnenT2LqCnLPceJYXS0BvWMHdUjZnad0PXGw"
+    login_url = f"https://sagemodeboy.eu.auth0.com/authorize?audience=CapstoneAPI&response_type=token&client_id=aotIkvWv0Kf7HikQEeW0EimtfA1RqPrN&redirect_uri={os.environ.get('CALLBACK','https://127.0.0.1:5000/login')}"
 
-    token = 'No token'
+    token = os.environ.get("TOKEN","no token")
 
     app = Flask(__name__)
     setup_db(app)
@@ -24,6 +22,7 @@ def create_app(test_config=None):
         greeting = "Welcome to the houses platform " 
         greeting += "Endpoints: get-agents, get-houses "
         greeting += token
+        print(os.environ.get("TEST",'no'))
         return greeting
 
     @app.route('/login')
