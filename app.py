@@ -1,11 +1,18 @@
 import os
-from flask import Flask, request, abort, jsonify
+from flask import Flask, request, abort, jsonify, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
-from models import setup_db, db, Agent, House
 import sys
+from database.models import setup_db,db,House,Agent
+from auth.auth import requires_auth, AuthError
 
 def create_app(test_config=None):
+
+    login_url = "https://sagemodeboy.eu.auth0.com/authorize?audience=CapstoneAPI&response_type=token&client_id=aotIkvWv0Kf7HikQEeW0EimtfA1RqPrN&redirect_uri=http://127.0.0.1:5000/welcome"
+    
+    original_token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik56SkdOekF6UXpORFJqaENNekV6UlRCQlJVSTFSa1JEUkVKQ016VkZRek5DUWpCQk9FVXhOdyJ9.eyJpc3MiOiJodHRwczovL3NhZ2Vtb2RlYm95LmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJnb29nbGUtb2F1dGgyfDExNzEzOTAzMTUzNjk3NzUxMTQxMiIsImF1ZCI6WyJDYXBzdG9uZUFQSSIsImh0dHBzOi8vc2FnZW1vZGVib3kuZXUuYXV0aDAuY29tL3VzZXJpbmZvIl0sImlhdCI6MTU4OTQxMTMzNSwiZXhwIjoxNTg5NDgzMzM1LCJhenAiOiJhb3RJa3ZXdjBLZjdIaWtRRWVXMEVpbXRmQTFScVByTiIsInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwiLCJwZXJtaXNzaW9ucyI6WyJkZWxldGU6YWdlbnRzIiwiZ2V0OmFnZW50cyIsInBvc3Q6YWdlbnRzIiwicHV0OmFnZW50cyJdfQ.lbh-bEnAfRDiJcO0VVRA-PpJ2BgrzWqeKsIKY_WmjiegLtJ-uajgShGuNXVV7fNtkqqLH187drxIrPekRQQDffr79lXNCoeGjp6XAJ1rnToZNLbpPBLDROb0jFs5yP2FDLBITFrUNc-wAg-5qIwIRr5A3NO350SBb2-YwjPjvr6wZU38TySpMxY8lBF6Y6jd4dmaoJ1J6gRzSFaAnoYBNurBuHzfsxpa5dLcIoXstXqmnYrroF5NNB_33qb_hbRQrtaahVsc9czHyhb8Abu3jeg7eIndk0CTq55nnDfv067sx9SXp2QnenT2LqCnLPceJYXS0BvWMHdUjZnad0PXGw"
+
+    token = 'No token'
 
     app = Flask(__name__)
     setup_db(app)
@@ -15,13 +22,20 @@ def create_app(test_config=None):
     def get_greeting():
         excited = os.environ.get('EXCITED',False)
         greeting = "Welcome to the houses platform " 
-        greeting += "Endpoints: get-agents, get-houses"
+        greeting += "Endpoints: get-agents, get-houses "
+        greeting += token
         return greeting
+
+    @app.route('/login')
+    def login():
+        return redirect(login_url)
 
 
     #================== Agents Endpoints =====================
     @app.route('/get-agents')
-    def get_agents():
+    @requires_auth('get:agents')
+    def get_agents(permission):
+        print(permission)
         agents = Agent.query.all()
         formatted_agents = [agent.format() for agent in agents]
         return jsonify({
@@ -161,7 +175,6 @@ def create_app(test_config=None):
                 return unprocessable(422)
             return get_houses()
 
-
     #=================ERROR HANDLERS==================#
     @app.errorhandler(422)
     def unprocessable(error):
@@ -194,7 +207,14 @@ def create_app(test_config=None):
                         "error": 500,
                         "message": "internal server error, check logs for more details"
                         }), 500
-
+    
+    @app.errorhandler(AuthError)
+    def auth_error(error):
+        return jsonify({
+                        "success": False, 
+                        "error": 401,
+                        "message": "Authorization header is expected."
+                        }), 401
     return app
 
 app = create_app()
