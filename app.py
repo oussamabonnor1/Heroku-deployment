@@ -34,7 +34,6 @@ def create_app(test_config=None):
     @app.route('/get-agents')
     @requires_auth('get:agents')
     def get_agents(permission):
-        print(permission)
         agents = Agent.query.all()
         formatted_agents = [agent.format() for agent in agents]
         return jsonify({
@@ -42,6 +41,7 @@ def create_app(test_config=None):
         })
 
     @app.route('/get-agent/<id>')
+    @requires_auth('get:agents')
     def get_agent(id):
         selected_agent = Agent.query.filter(Agent.id == id).one_or_none()
         if(selected_agent is None):
@@ -52,7 +52,8 @@ def create_app(test_config=None):
             })
 
     @app.route('/create-agent', methods=['POST'])
-    def create_agent():
+    @requires_auth('post:agents')
+    def create_agent(permission):
         body = request.get_json()
         try:
             person = Agent(name=body.get('name',''), age=body.get('age', ''), picture='')
@@ -64,7 +65,8 @@ def create_app(test_config=None):
         return get_agents()
 
     @app.route('/update-agent/<id>', methods=['PUT'])
-    def update_agent(id):
+    @requires_auth('put:agents')
+    def update_agent(permission,id):
         selected_agent = Agent.query.filter(Agent.id == id).one_or_none()
         if selected_agent is None:
             return not_found(404)
@@ -85,7 +87,8 @@ def create_app(test_config=None):
             return get_agents()
 
     @app.route('/delete-agent/<id>', methods=['DELETE'])
-    def delete_agent(id):
+    @requires_auth('delete:agents')
+    def delete_agent(permission,id):
         selected_agent = Agent.query.filter(Agent.id == id).one_or_none()
         if selected_agent is None:
             return not_found(404)
@@ -115,7 +118,7 @@ def create_app(test_config=None):
             return not_found(404)
         else: 
             return jsonify({
-                "agents":selected_house.format()
+                "agent":selected_house.format()
             })
 
     @app.route('/create-house', methods=['POST'])
@@ -126,8 +129,7 @@ def create_app(test_config=None):
                 name=body.get('name',''),
                 rooms=body.get('rooms', ''),
                 price=body.get('price', ''),
-                picture=body.get('picture', ''),
-                agent_id = body.get('agent', -1))
+                picture=body.get('picture', ''))
             house.insert()
         except:
             print(sys.exc_info())
@@ -146,7 +148,6 @@ def create_app(test_config=None):
             rooms = body.get('rooms',selected_house.rooms)
             price = body.get('price',selected_house.price)
             picture = body.get('picture',selected_house.picture)
-            agent_id = body.get('agent',selected_house.agent_id)
             try:
                 selected_house.name = name 
                 selected_house.rooms = rooms

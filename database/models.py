@@ -60,14 +60,12 @@ class House(db.Model):
   rooms = Column(Integer)
   price = Column(Integer)
   picture = Column(String)
-  agent_id = db.Column(db.Integer, db.ForeignKey('Agents.id'))
 
-  def __init__(self, name, rooms, price, picture, agent_id):
+  def __init__(self, name, rooms, price, picture):
     self.name = name
     self.rooms = rooms
     self.price = price
     self.picture = picture
-    self.agent_id = agent_id
 
   def insert(self):
     db.session.add(self)
@@ -86,6 +84,32 @@ class House(db.Model):
       'name': self.name,
       'rooms': self.rooms,
       'price': self.price,
-      'agent': self.agent_id,
       'picture': self.picture
     }
+
+class Job(db.Model):
+  __tablename__ = 'Job'
+  agent_id = db.Column(db.Integer, db.ForeignKey('Agents.id',ondelete='CASCADE'), primary_key=True)
+  house_id = db.Column(db.Integer, db.ForeignKey('Houses.id',ondelete='CASCADE'), primary_key=True)
+  
+  def __init__(self, agent_id, house_id):
+    self.agent_id = agent_id
+    self.house_id = house_id
+  
+  def insert(self):
+    db.session.add(self)
+    db.session.commit()
+  
+  def update(self):
+    db.session.commit()
+
+  def delete(self):
+    db.session.delete(self)
+    db.session.commit()
+
+  def format(self):
+    return {
+      'agent_id': self.agent_id,
+      'house_id': self.house_id
+      }
+
