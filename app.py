@@ -8,7 +8,7 @@ from auth.auth import requires_auth, AuthError
 
 def create_app(test_config=None):
 
-    login_url = f"https://sagemodeboy.eu.auth0.com/authorize?audience=CapstoneAPI&response_type=token&client_id=aotIkvWv0Kf7HikQEeW0EimtfA1RqPrN&redirect_uri={os.environ.get('CALLBACK','https://127.0.0.1:5000/login')}"
+    login_url = f"https://sagemodeboy.eu.auth0.com/authorize?audience=CapstoneAPI&response_type=token&client_id=aotIkvWv0Kf7HikQEeW0EimtfA1RqPrN&redirect_uri={os.environ.get('CALLBACK','https://127.0.0.1:5000')}"
 
     token = os.environ.get("TOKEN","no token")
 
@@ -104,7 +104,8 @@ def create_app(test_config=None):
 
     #================== Houses Endpoints =====================
     @app.route('/get-houses')
-    def get_houses():
+    @requires_auth('get:houses')
+    def get_houses(permission):
         houses = House.query.all()
         formatted_houses = [house.format() for house in houses]
         return jsonify({
@@ -112,6 +113,7 @@ def create_app(test_config=None):
         })
 
     @app.route('/get-house/<id>')
+    @requires_auth('get:houses')
     def get_house(id):
         selected_house = House.query.filter(House.id == id).one_or_none()
         if(selected_house is None):
@@ -122,7 +124,8 @@ def create_app(test_config=None):
             })
 
     @app.route('/create-house', methods=['POST'])
-    def create_house():
+    @requires_auth('post:houses')
+    def create_house(permission):
         body = request.get_json()
         try:
             house = House(
@@ -138,7 +141,8 @@ def create_app(test_config=None):
         return get_houses()
 
     @app.route('/update-house/<id>', methods=['PUT'])
-    def update_house(id):
+    @requires_auth('put:houses')
+    def update_house(permission, id):
         selected_house = House.query.filter(House.id == id).one_or_none()
         if selected_house is None:
             return not_found(404)
@@ -153,7 +157,6 @@ def create_app(test_config=None):
                 selected_house.rooms = rooms
                 selected_house.price = price
                 selected_house.picture = picture
-                selected_house.agent_id = agent_id
                 selected_house.update()
             except:
                 print(sys.exc_info())
@@ -162,7 +165,8 @@ def create_app(test_config=None):
             return get_houses()
 
     @app.route('/delete-house/<id>', methods=['DELETE'])
-    def delete_house(id):
+    @requires_auth('delete:houses')
+    def delete_house(permission, id):
         selected_house = House.query.filter(House.id == id).one_or_none()
         if selected_house is None:
             return not_found(404)
