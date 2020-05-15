@@ -179,8 +179,6 @@ def create_app(test_config=None):
                 return unprocessable(422)
             return get_houses()
 
-
-
     #================== Jobs Endpoints =====================
     @app.route('/get-jobs')
     @requires_auth('get:jobs')
