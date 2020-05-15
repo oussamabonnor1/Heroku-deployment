@@ -3,7 +3,7 @@ from flask import Flask, request, abort, jsonify, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import sys
-from database.models import setup_db,db,House,Agent
+from database.models import setup_db,db,House,Agent, Job
 from auth.auth import requires_auth, AuthError
 
 def create_app(test_config=None):
@@ -178,6 +178,85 @@ def create_app(test_config=None):
                 db.session.rollback()
                 return unprocessable(422)
             return get_houses()
+
+
+
+    #================== Jobs Endpoints =====================
+    @app.route('/get-jobs')
+    @requires_auth('get:jobs')
+    def get_jobs(permission):
+        jobs = Job.query.all()
+        formatted_jobs = [job.format() for job in jobs]
+        return jsonify({
+            "jobs":formatted_jobs
+        })
+
+    @app.route('/get-jobs/<id>')
+    @requires_auth('get:jobs')
+    def get_job(id):
+        selected_job = Job.query.filter(Job.id == id).one_or_none()
+        if(selected_job is None):
+            return not_found(404)
+        else: 
+            return jsonify({
+                "job":selected_job.format()
+            })
+
+    @app.route('/create-job', methods=['POST'])
+    @requires_auth('post:jobs')
+    def create_job(permission):
+        body = request.get_json()
+        try:
+            job = Job(
+                agent_id=body.get('agent_id',''),
+                house_id=body.get('house_id', ''),
+            )
+            job.insert()
+        except:
+            print(sys.exc_info())
+            db.session.rollback()
+            return unprocessable(422)
+        return get_jobs()
+
+    @app.route('/update-job', methods=['PUT'])
+    @requires_auth('put:jobs')
+    def update_job(permission):
+        agent_id = request.args.get('agent_id',-1)
+        house_id = request.args.get('house_id',-1)
+        selected_job = Job.query.filter(Job.agent_id == agent_id and Job.house_id == house_id).one_or_none()
+        if selected_job is None:
+            return not_found(404)
+        else:
+            body = request.get_json()
+            agent_id = body.get('agent_id',selected_job.agent_id)
+            house_id = body.get('house_id',selected_job.house_id)
+            try:
+                selected_job.agent_id = agent_id 
+                selected_job.house_id = house_id
+                selected_job.update()
+            except:
+                print(sys.exc_info())
+                db.session.rollback()
+                return unprocessable(422)
+            return get_jobs()
+
+    @app.route('/delete-job', methods=['DELETE'])
+    @requires_auth('delete:jobs')
+    def delete_job(permission):
+        agent_id = request.args.get('agent_id',-1)
+        house_id = request.args.get('house_id',-1)
+        selected_job = Job.query.filter(Job.agent_id == agent_id and Job.house_id == house_id).one_or_none()
+        
+        if selected_job is None:
+            return not_found(404)
+        else:
+            try:
+                selected_job.delete()
+            except:
+                print(sys.exc_info())
+                db.session.rollback()
+                return unprocessable(422)
+            return get_jobs()
 
     #=================ERROR HANDLERS==================#
     @app.errorhandler(422)
