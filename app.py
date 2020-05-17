@@ -101,7 +101,6 @@ def create_app(test_config=None):
                 return unprocessable(422)
             return get_agents()
 
-
     #================== Houses Endpoints =====================
     @app.route('/get-houses')
     @requires_auth('get:houses')
@@ -275,6 +274,14 @@ def create_app(test_config=None):
                         "error": 403,
                         "message": "You don't have the permission to access the requested resource."
                         }), 403
+
+    @app.errorhandler(405)
+    def forbidden(error):
+        return jsonify({
+                        "success": False, 
+                        "error": 405,
+                        "message": "Method not allowed"
+                        }), 405
 
     @app.errorhandler(404)
     def not_found(error):

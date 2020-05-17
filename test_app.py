@@ -36,7 +36,8 @@ class CapstoneTest(unittest.TestCase):
     def tearDown(self):
         """Executed after reach test"""
         pass
-
+    
+    #=====================Success test area===============================
     #=====================Agents test area success========================
     def test_get_agents(self):
         res = self.client().get('/get-agents')
@@ -184,81 +185,125 @@ class CapstoneTest(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertEqual(job, None)
-      
 
-    # def test_search_questions(self):
-    #     #Use search_term below to decide what questions to search for and test it
-    #     search_term = {
-    #         'searchTerm':'Who',
-    #     }
-    #     res = self.client().post('/questions/search', json = search_term)
-    #     data = json.loads(res.data)
-    #     self.assertEqual(res.status_code, 200)
-    #     self.assertEqual(data['success'], True)
+    #====================Test fail area=========================  
+    #====================Test Agent area========================
+    def test_get_agent_not_found(self):
+        
+        res = self.client().get('/get-agent/350')
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code,404)
+        self.assertEqual(data['success'],False)
+        self.assertEqual(data['message'],'not found')
 
-    # def test_get_questions_by_category(self):
-    #     category = 1
-    #     res = self.client().get(f'/questions/{category}')
-    #     data = json.loads(res.data)
-    #     self.assertEqual(res.status_code, 200)
-    #     self.assertEqual(data['success'], True)
-    #     self.assertEqual(data['current_category'], category)
-    #     self.assertTrue(data['total_questions'])
+    def test_create_agent_not_allowed(self):
+        new_agent = {
+            'name': 'some agent',
+            'age': 27,
+        }
+        res = self.client().post('/get-agents', json = new_agent)
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code,405)
+        self.assertEqual(data['success'],False)
+        self.assertEqual(data['message'],'Method not allowed')
 
-    # def test_play_quiz(self):
-    #     #Use quiz_data below to chose the questions you'll receive and test it
-    #     #P.s: quiz_category starts from 0 (due to the way the frontend was written)
-    #     quiz_data = {
-    #         'quiz_category':5,
-    #         'previous_questions':[10] #The one where 'Brazil' is the answer
-    #     }
-    #     res = self.client().post('/play', json = quiz_data)
-    #     data = json.loads(res.data)
-    #     self.assertEqual(res.status_code, 200)
-    #     self.assertEqual(data['question'],'false')
-    #     self.assertNotIn(data['next_question'], quiz_data['previous_questions'])
+    def test_update_agent_not_found(self):
+        update_agent = {
+            'name': 'some agent',
+            'age': 27,
+        }
+        id = 350
+        res = self.client().put(f'/update-agent/{id}', json = update_agent)
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'not found')
 
-    # def test_play_quiz_force_end(self):
-    #     #Use quiz_data below to chose the questions you'll receive and test it
-    #     #P.s: quiz_category starts from 0 (due to the way the frontend was written)
-    #     quiz_data = {
-    #         'quiz_category':5,
-    #         'previous_questions':[10,11] #We include all questions of the category to trigger end of the game
-    #     }
-    #     res = self.client().post('/play', json = quiz_data)
-    #     data = json.loads(res.data)
-    #     self.assertEqual(res.status_code, 200)
-    #     self.assertEqual(data['question'],'true')
-    #     self.assertEqual(data['next_question'],'')
+    def test_delete_agent_not_found(self):
+        id = 350
+        res = self.client().delete(f'/delete-agent/{id}')
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], "not found")
 
-    # def test_question_creation_not_allowed(self):
-    #     new_question = {
-    #         'question':'Who s a good boy?',
-    #         'answer': 'Doggo',
-    #         'difficulty':1,
-    #         'category':1
-    #     }
-    #     res = self.client().post('/questions/1',json=new_question)
-    #     data = json.loads(res.data)
-    #     self.assertEqual(res.status_code,405)
-    #     self.assertEqual(data['Success'],False)
-    #     self.assertEqual(data['Message'],'Method not allowed')
+    #====================Test House area========================
+    def test_get_house_not_found(self):
+        
+        res = self.client().get('/get-house/350')
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code,404)
+        self.assertEqual(data['success'],False)
+        self.assertEqual(data['message'],'not found')
 
-    # def test_get_categories_not_found(self):
-    #     res = self.client().get(f'/categories/1')
-    #     data = json.loads(res.data)
-    #     self.assertEqual(res.status_code,404)
-    #     self.assertEqual(data['Success'],False)
-    #     self.assertEqual(data['Message'],'Entity not found (404)')
+    def test_create_house_not_allowed(self):
+        new_house = {
+            'name': 'some house',
+            'age': 27,
+        }
+        res = self.client().post('/get-houses', json = new_house)
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code,405)
+        self.assertEqual(data['success'],False)
+        self.assertEqual(data['message'],'Method not allowed')
 
-    # def test_delete_question_unprocessable_entity(self):
-    #     delete_question = 150
-    #     res = self.client().delete(f'/questions/{delete_question}')
-    #     data = json.loads(res.data)
-    #     self.assertEqual(res.status_code,422)
-    #     self.assertEqual(data['Success'],False)
-    #     self.assertEqual(data['Message'],'Unprocessable Entity')
+    def test_update_house_not_found(self):
+        update_house = {
+            'name': 'some house',
+            'age': 27,
+        }
+        id = 350
+        res = self.client().put(f'/update-house/{id}', json = update_house)
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'not found')
 
+    def test_delete_house_not_found(self):
+        id = 350
+        res = self.client().delete(f'/delete-house/{id}')
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], "not found")
+
+    #====================Test Job area========================
+    def test_get_job_not_found(self):
+        
+        res = self.client().get('/get-job?agent_id=350&house_id=350')
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code,404)
+        self.assertEqual(data['success'],False)
+        self.assertEqual(data['message'],'not found')
+
+    def test_create_job_not_allowed(self):
+        new_job = {
+             'agent_id': 1,
+             'house_id': 1
+        }
+        res = self.client().post('/get-jobs', json = new_job)
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code,405)
+        self.assertEqual(data['success'],False)
+        self.assertEqual(data['message'],'Method not allowed')
+
+    def test_update_job_not_found(self):
+        update_job = {
+             'agent_id': 1,
+             'house_id': 1
+        }
+        res = self.client().put(f'/update-job?agent_id=350&house_id=350', json = update_job)
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'not found')
+
+    def test_delete_job_not_found(self):
+        res = self.client().delete(f'/delete-job?agent_id=350&house_id=350')
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], "not found")
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
