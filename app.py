@@ -19,16 +19,14 @@ def create_app(test_config=None):
     @app.route('/')
     def get_greeting():
         excited = os.environ.get('EXCITED',False)
-        greeting = "Welcome to the houses platform " 
-        greeting += "Endpoints: get-agents, get-houses "
-        greeting += token
-        print(os.environ.get("TEST",'no'))
+        greeting = "Welcome to the houses platform <br>" 
+        greeting += "Endpoints: get-agents, get-houses <br>"
+        greeting += "token: "+token
         return greeting
 
     @app.route('/login')
     def login():
         return redirect(login_url)
-
 
     #================== Agents Endpoints =====================
     @app.route('/get-agents')
@@ -37,17 +35,19 @@ def create_app(test_config=None):
         agents = Agent.query.all()
         formatted_agents = [agent.format() for agent in agents]
         return jsonify({
+            "success":True,
             "agents":formatted_agents
         })
 
     @app.route('/get-agent/<id>')
     @requires_auth('get:agents')
-    def get_agent(id):
+    def get_agent(permission,id):
         selected_agent = Agent.query.filter(Agent.id == id).one_or_none()
         if(selected_agent is None):
             return not_found(404)
         else: 
             return jsonify({
+                "success":True,
                 "agents":selected_agent.format()
             })
 
@@ -114,7 +114,7 @@ def create_app(test_config=None):
 
     @app.route('/get-house/<id>')
     @requires_auth('get:houses')
-    def get_house(id):
+    def get_house(permission,id):
         selected_house = House.query.filter(House.id == id).one_or_none()
         if(selected_house is None):
             return not_found(404)
@@ -189,10 +189,12 @@ def create_app(test_config=None):
             "jobs":formatted_jobs
         })
 
-    @app.route('/get-jobs/<id>')
+    @app.route('/get-jobs')
     @requires_auth('get:jobs')
-    def get_job(id):
-        selected_job = Job.query.filter(Job.id == id).one_or_none()
+    def get_job(permission):
+        agent_id = request.args.get('agent_id',-1)
+        house_id = request.args.get('house_id',-1)
+        selected_job = Job.query.filter(Job.agent_id == agent_id and Job.house_id == house_id).one_or_none()
         if(selected_job is None):
             return not_found(404)
         else: 
