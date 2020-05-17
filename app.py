@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, abort, jsonify, redirect
+from flask import Flask, render_template, request, abort, jsonify, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import sys
@@ -13,16 +13,17 @@ def create_app(test_config=None):
     token = os.environ.get("TOKEN","no token")
 
     app = Flask(__name__)
+    app.config["TEMPLATES_AUTO_RELOAD"] = True
     setup_db(app)
     CORS(app)
 
     @app.route('/')
-    def get_greeting():
-        excited = os.environ.get('EXCITED',False)
-        greeting = "Welcome to the houses platform <br>" 
-        greeting += "Endpoints: get-agents, get-houses <br>"
-        greeting += "token: "+token
-        return greeting
+    def home():
+        return render_template('index.html')
+    
+    @app.route('/index.html')
+    def index():
+        return render_template('index.html')
 
     @app.route('/login')
     def login():
