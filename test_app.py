@@ -15,7 +15,6 @@ class TestAppWrapper(object):
         return self.app(environ, start_response)
 
 class CapstoneTest(unittest.TestCase):
-    """This class represents the trivia test case"""
 
     def setUp(self):
         """Define test variables and initialize app."""
@@ -83,7 +82,110 @@ class CapstoneTest(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertEqual(agent, None)
-        
+
+    #=====================Houses test area success========================
+    def test_get_houses(self):
+        res = self.client().get('/get-houses')
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+
+    def test_get_house(self):
+        id = House.query.first().id
+        res = self.client().get(f'/get-house/{id}')
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+    
+    def test_create_house(self):
+        new_house = {
+            'name': "some house",
+            'rooms': 4,
+            'price': 1525,
+        }
+        res = self.client().post('/create-house', json = new_house)
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+
+    def test_update_house(self):
+        update_house = {
+            'name': "some house",
+            'rooms': 5,
+            'price': 1525,
+        }
+        id = House.query.order_by(House.id.desc()).first().id
+        res = self.client().put(f'/update-house/{id}', json = update_house)
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        house = House.query.filter(House.id == id).one_or_none()
+        self.assertEqual(house.rooms, update_house["rooms"])
+
+    def test_delete_house(self):
+        id = House.query.order_by(House.id.desc()).first().id
+        res = self.client().delete(f'/delete-house/{id}')
+        data = json.loads(res.data)
+        house = House.query.filter(House.id == id).one_or_none()
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertEqual(house, None)
+
+    #=====================Jobs test area success========================
+    def test_get_jobs(self):
+        res = self.client().get('/get-jobs')
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+    
+    def test_create_job(self):
+        self.test_create_agent()
+        self.test_create_house()
+        agent_id = Agent.query.order_by(Agent.id.desc()).first().id
+        house_id = House.query.order_by(House.id.desc()).first().id
+
+        new_job = {
+            'agent_id': agent_id,
+            'house_id': house_id
+        }
+        print(f"create job {new_job}")
+        res = self.client().post('/create-job', json = new_job)
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+    
+    def test_csget_job(self):
+        job = Job.query.order_by(Job.agent_id.desc()).first()
+        print(f"get {job.agent_id}/{job.house_id}")
+        res = self.client().get(f'/get-job?agent_id={job.agent_id}&house_id={job.house_id}')
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+
+    def test_cupdate_job(self):
+        job = Job.query.order_by(Job.agent_id.desc()).first()
+        print(f"update  {job.agent_id}/{job.house_id}")
+        update_job = {
+            'agent_id': job.agent_id,
+            'house_id': job.house_id
+        }
+        res = self.client().put(f'/update-job?agent_id={job.agent_id}&house_id={job.house_id}')
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+
+    def test_delete_job(self):
+        self.test_create_job()
+        job = Job.query.order_by(Job.agent_id.desc()).first()
+        print(f"delete {job.agent_id}/{job.house_id}")
+        res = self.client().delete(f'/delete-job?agent_id={job.agent_id}&house_id={job.house_id}')
+        data = json.loads(res.data)
+        job = Job.query.filter(Job.agent_id == job.agent_id and Job.house_id == job.house_id).one_or_none()
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertEqual(job, None)
+      
+
     # def test_search_questions(self):
     #     #Use search_term below to decide what questions to search for and test it
     #     search_term = {

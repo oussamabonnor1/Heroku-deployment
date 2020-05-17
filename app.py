@@ -109,6 +109,7 @@ def create_app(test_config=None):
         houses = House.query.all()
         formatted_houses = [house.format() for house in houses]
         return jsonify({
+            "success":True,
             "houses":formatted_houses
         })
 
@@ -120,6 +121,7 @@ def create_app(test_config=None):
             return not_found(404)
         else: 
             return jsonify({
+                "success":True,
                 "agent":selected_house.format()
             })
 
@@ -186,10 +188,11 @@ def create_app(test_config=None):
         jobs = Job.query.all()
         formatted_jobs = [job.format() for job in jobs]
         return jsonify({
+            "success":True,
             "jobs":formatted_jobs
         })
 
-    @app.route('/get-jobs')
+    @app.route('/get-job')
     @requires_auth('get:jobs')
     def get_job(permission):
         agent_id = request.args.get('agent_id',-1)
@@ -199,6 +202,7 @@ def create_app(test_config=None):
             return not_found(404)
         else: 
             return jsonify({
+                "success":True,
                 "job":selected_job.format()
             })
 
@@ -227,9 +231,6 @@ def create_app(test_config=None):
         if selected_job is None:
             return not_found(404)
         else:
-            body = request.get_json()
-            agent_id = body.get('agent_id',selected_job.agent_id)
-            house_id = body.get('house_id',selected_job.house_id)
             try:
                 selected_job.agent_id = agent_id 
                 selected_job.house_id = house_id
