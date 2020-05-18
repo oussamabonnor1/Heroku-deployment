@@ -1,11 +1,8 @@
+
 	(function($) {
 		"use strict";
-	
-	
 	$(document).ready(function() {
-
-	
-	
+		
 	/*mega menu custon function*/
 	$('.dropdown-submenu').hover(function() {
 	if ($(window).width() >= 479) {
