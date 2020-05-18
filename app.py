@@ -28,7 +28,8 @@ def create_app(test_config=None):
     
     @app.route('/agents.html')
     def agents():
-        return render_template('agents.html')
+        agents = get_agents()
+        return render_template('agents.html', data=agents.json)
     
     @app.route('/properties.html')
     def properties():
@@ -49,8 +50,7 @@ def create_app(test_config=None):
 
     #================== Agents Endpoints =====================
     @app.route('/get-agents')
-    @requires_auth('get:agents')
-    def get_agents(permission):
+    def get_agents():
         agents = Agent.query.all()
         formatted_agents = [agent.format() for agent in agents]
         return jsonify({

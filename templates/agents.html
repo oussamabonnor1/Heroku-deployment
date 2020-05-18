@@ -67,7 +67,7 @@
         <ul class="toplist toppadding">
           <li><a href="#">Login</a></li>
           <li><a href="#">Register</a></li>
-          <li class="last"><span class="call-us-box">Call Us (888) 123-4567</span></li>
+          <li class="last"><span class="call-us-box">Admin</span></li>
         </ul>
       </div>
     </div>
@@ -99,7 +99,7 @@
     <div class="header-inner two">
       <div class="inner text-center">
         <h4 class="title text-white uppercase">Agents</h4>
-        <h5 class="text-white uppercase">Get many More Features</h5>
+        <h5 class="text-white uppercase">Gotta Catch'em all</h5>
       </div>
       <div class="overlay bg-opacity-5"></div>
       <img src="http://placehold.it/1920x800" alt="" class="img-responsive"/> </div>
@@ -115,7 +115,8 @@
           <div class="title-line-4 green align-center"></div>
         </div>
         <div class="clearfix"></div>
-        <div class="col-md-3 col-sm-6">
+        {%for agent in data.agents%}
+        <div class="col-md-3 col-sm-6" style="margin-bottom: 20px;">
           <div class="team-holder13 bmargin">
             <div class="img-holder">
               <div class="icon-box text-center">
@@ -128,173 +129,19 @@
               </div>
               <img src="http://placehold.it/450x550" alt="" class="img-responsive"/> </div>
             <div class="content-box less-pading text-center">
-              <h5 class="nomargin title">Michael</h5>
-              <h6 class="text-green-3 nopadding">Senior Agent</h6>
+              <h5 class="nomargin title"><a href="/agents/{{agent.id}}">{{agent.name}}</a></h5>
+              <h6 class="text-green-3 nopadding">{{agent.age}} years old</h6>
               <br/>
-              <p>Lorem ipsum dolor sit amet, consectetuer adipiscing </p>
+              <p>Some description to be added later and stuff</p>
             </div>
           </div>
         </div>
         <!--end item-->
-        
-        <div class="col-md-3 col-sm-6">
-          <div class="team-holder13 bmargin active">
-            <div class="img-holder">
-              <div class="icon-box text-center">
-                <ul class="social-icons-1">
-                  <li><a href="https://twitter.com/codelayers"><i class="fa fa-twitter"></i></a></li>
-                  <li><a href="https://www.facebook.com/codelayers"><i class="fa fa-facebook"></i></a></li>
-                  <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                  <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                </ul>
-              </div>
-              <img src="http://placehold.it/450x550" alt="" class="img-responsive"/> </div>
-            <div class="content-box less-pading text-center">
-              <h5 class="nomargin title">Elizabeth</h5>
-              <h6 class="text-green-3 nopadding">Agent</h6>
-              <br/>
-              <p>Lorem ipsum dolor sit amet, consectetuer adipiscing </p>
-            </div>
-          </div>
-        </div>
-        <!--end item-->
-        
-        <div class="col-md-3 col-sm-6">
-          <div class="team-holder13 bmargin">
-            <div class="img-holder">
-              <div class="icon-box text-center">
-                <ul class="social-icons-1">
-                  <li><a href="https://twitter.com/codelayers"><i class="fa fa-twitter"></i></a></li>
-                  <li><a href="https://www.facebook.com/codelayers"><i class="fa fa-facebook"></i></a></li>
-                  <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                  <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                </ul>
-              </div>
-              <img src="http://placehold.it/450x550" alt="" class="img-responsive"/> </div>
-            <div class="content-box less-pading text-center">
-              <h5 class="nomargin title">Benjamin</h5>
-              <h6 class="text-green-3 nopadding">Senior Agent</h6>
-              <br/>
-              <p>Lorem ipsum dolor sit amet, consectetuer adipiscing </p>
-            </div>
-          </div>
-        </div>
-        <!--end item-->
-        
-        <div class="col-md-3 col-sm-6">
-          <div class="team-holder13 bmargin">
-            <div class="img-holder">
-              <div class="icon-box text-center">
-                <ul class="social-icons-1">
-                  <li><a href="https://twitter.com/codelayers"><i class="fa fa-twitter"></i></a></li>
-                  <li><a href="https://www.facebook.com/codelayers"><i class="fa fa-facebook"></i></a></li>
-                  <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                  <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                </ul>
-              </div>
-              <img src="http://placehold.it/450x550" alt="" class="img-responsive"/> </div>
-            <div class="content-box less-pading text-center">
-              <h5 class="nomargin title">Christopher</h5>
-              <h6 class="text-green-3 nopadding">Agent</h6>
-              <br/>
-              <p>Lorem ipsum dolor sit amet, consectetuer adipiscing </p>
-            </div>
-          </div>
-        </div>
-        <!--end item--> 
+        {%endfor%}
         
         
-        <div class="clearfix"></div>
         
-        <div class="col-divider-margin-4"></div>
         
-        <div class="col-md-3 col-sm-6">
-          <div class="team-holder13 bmargin">
-            <div class="img-holder">
-              <div class="icon-box text-center">
-                <ul class="social-icons-1">
-                  <li><a href="https://twitter.com/codelayers"><i class="fa fa-twitter"></i></a></li>
-                  <li><a href="https://www.facebook.com/codelayers"><i class="fa fa-facebook"></i></a></li>
-                  <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                  <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                </ul>
-              </div>
-              <img src="http://placehold.it/450x550" alt="" class="img-responsive"/> </div>
-            <div class="content-box less-pading text-center">
-              <h5 class="nomargin title">Michael</h5>
-              <h6 class="text-green-3 nopadding">Senior Agent</h6>
-              <br/>
-              <p>Lorem ipsum dolor sit amet, consectetuer adipiscing </p>
-            </div>
-          </div>
-        </div>
-        <!--end item-->
-        
-        <div class="col-md-3 col-sm-6">
-          <div class="team-holder13 bmargin">
-            <div class="img-holder">
-              <div class="icon-box text-center">
-                <ul class="social-icons-1">
-                  <li><a href="https://twitter.com/codelayers"><i class="fa fa-twitter"></i></a></li>
-                  <li><a href="https://www.facebook.com/codelayers"><i class="fa fa-facebook"></i></a></li>
-                  <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                  <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                </ul>
-              </div>
-              <img src="http://placehold.it/450x550" alt="" class="img-responsive"/> </div>
-            <div class="content-box less-pading text-center">
-              <h5 class="nomargin title">Elizabeth</h5>
-              <h6 class="text-green-3 nopadding">Agent</h6>
-              <br/>
-              <p>Lorem ipsum dolor sit amet, consectetuer adipiscing </p>
-            </div>
-          </div>
-        </div>
-        <!--end item-->
-        
-        <div class="col-md-3 col-sm-6">
-          <div class="team-holder13 bmargin">
-            <div class="img-holder">
-              <div class="icon-box text-center">
-                <ul class="social-icons-1">
-                  <li><a href="https://twitter.com/codelayers"><i class="fa fa-twitter"></i></a></li>
-                  <li><a href="https://www.facebook.com/codelayers"><i class="fa fa-facebook"></i></a></li>
-                  <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                  <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                </ul>
-              </div>
-              <img src="http://placehold.it/450x550" alt="" class="img-responsive"/> </div>
-            <div class="content-box less-pading text-center">
-              <h5 class="nomargin title">Benjamin</h5>
-              <h6 class="text-green-3 nopadding">Senior Agent</h6>
-              <br/>
-              <p>Lorem ipsum dolor sit amet, consectetuer adipiscing </p>
-            </div>
-          </div>
-        </div>
-        <!--end item-->
-        
-        <div class="col-md-3 col-sm-6">
-          <div class="team-holder13 bmargin">
-            <div class="img-holder">
-              <div class="icon-box text-center">
-                <ul class="social-icons-1">
-                  <li><a href="https://twitter.com/codelayers"><i class="fa fa-twitter"></i></a></li>
-                  <li><a href="https://www.facebook.com/codelayers"><i class="fa fa-facebook"></i></a></li>
-                  <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                  <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                </ul>
-              </div>
-              <img src="http://placehold.it/450x550" alt="" class="img-responsive"/> </div>
-            <div class="content-box less-pading text-center">
-              <h5 class="nomargin title">Christopher</h5>
-              <h6 class="text-green-3 nopadding">Agent</h6>
-              <br/>
-              <p>Lorem ipsum dolor sit amet, consectetuer adipiscing </p>
-            </div>
-          </div>
-        </div>
-        <!--end item-->
       </div>
     </div>
   </section>
