@@ -33,7 +33,8 @@ def create_app(test_config=None):
         return render_template('agents.html', data=agents.json)
     
     @app.route('/properties.html')
-    def properties():
+    @requires_auth('get:houses')
+    def properties(permission):
         houses = get_houses()
         return render_template('properties.html', data=houses.json)
     
