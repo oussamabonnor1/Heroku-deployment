@@ -27,24 +27,47 @@ def create_app(test_config=None):
     def index():
         return render_template('index.html')
     
+    @app.route('/agents')
+    def agents_holder():
+        return render_template('agents.html', data='')
+
     @app.route('/agents.html')
     @requires_auth('get:agents')
     def agents(permission):
         agents = get_agents()
         return render_template('agents.html', data=agents.json)
     
+    @app.route('/properties')
+    def properties_holder():
+        return render_template('properties.html', data='')
+    
     @app.route('/properties.html')
     @requires_auth('get:houses')
     def properties(permission):
         houses = get_houses()
         return render_template('properties.html', data=houses.json)
+
+    @app.route('/properties-details/<id>')
+    def properties_details_holder(id):
+        return render_template('properties-details.html', data=jsonify({'id':id}).json)
+
+    @app.route('/properties-details.html/<id>')
+    @requires_auth('get:houses')
+    def properties_details(permission, id):
+        house = get_house(id)
+        return render_template('properties-details.html', data=house.json)
     
     @app.route('/contact.html')
     def contact():
         return render_template('contact.html')
     
+    @app.route('/jobs')
+    def jobs_holder():
+        return render_template('jobs.html', data='')
+
     @app.route('/jobs.html')
-    def jobs():
+    @requires_auth('get:jobs')
+    def jobs(permission):
         jobs = get_jobs()
         return render_template('jobs.html', data=jobs.json)
 
@@ -145,7 +168,7 @@ def create_app(test_config=None):
         else: 
             return jsonify({
                 "success":True,
-                "agent":selected_house.format()
+                "house":selected_house.format()
             })
 
     @app.route('/create-house', methods=['POST'])

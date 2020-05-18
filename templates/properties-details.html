@@ -19,7 +19,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!-- Favicon -->
-<link rel="shortcut icon" href="static/images/favicon.ico">
+<link rel="shortcut icon" href="/static/images/favicon.ico">
 
 <!-- Google fonts - witch you want to use - (rest you can just remove) -->
 <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>
@@ -30,17 +30,16 @@
 <![endif]-->
 
 <!-- Stylesheets -->
-<link rel="stylesheet" media="screen" href="static/js/bootstrap/bootstrap.min.css" type="text/css" />
-<link rel="stylesheet" href="static/js/mainmenu/menu.css" type="text/css" />
-<link rel="stylesheet" href="static/css/default.css" type="text/css" />
-<link rel="stylesheet" href="static/css/layouts.css" type="text/css" />
-<link rel="stylesheet" href="static/css/shortcodes.css" type="text/css" />
-<link rel="stylesheet" href="static/css/font-awesome/css/font-awesome.min.css">
-<link rel="stylesheet" media="screen" href="static/css/responsive-leyouts.css" type="text/css" />
-<link rel="stylesheet" type="text/css" href="static/js/cubeportfolio/cubeportfolio.min.css">
-<link rel="stylesheet" type="text/css" href="static/css/Simple-Line-Icons-Webfont/simple-line-icons.css" media="screen" />
-<link rel="stylesheet" href="static/css/et-line-font/et-line-font.css">
-<link rel="stylesheet" href="static/js/jFlickrFeed/style.css" />
+<link rel="stylesheet" media="screen" href="/static/js/bootstrap/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" href="/static/js/mainmenu/menu.css" type="text/css" />
+<link rel="stylesheet" href="/static/css/default.css" type="text/css" />
+<link rel="stylesheet" href="/static/css/layouts.css" type="text/css" />
+<link rel="stylesheet" href="/static/css/shortcodes.css" type="text/css" />
+<link rel="stylesheet" href="/static/css/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" media="screen" href="/static/css/responsive-leyouts.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="/static/css/Simple-Line-Icons-Webfont/simple-line-icons.css" media="screen" />
+<link rel="stylesheet" href="/static/css/et-line-font/et-line-font.css">
+<link rel="stylesheet" href="/static/js/jFlickrFeed/style.css" />
 
 
 
@@ -62,7 +61,6 @@
 
 <body>
 <div class="site_wrapper">
-  
   <div class="clearfix"></div>
   
   <div id="header">
@@ -87,41 +85,27 @@
   <!--end menu-->
   <div class="clearfix"></div>
   
-  <section>
-    <div class="header-inner two">
-      <div class="inner text-center">
-        <h4 class="title text-white uppercase">Current Jobs</h4>
-        <h5 class="text-white uppercase">A little competition never hurts</h5>
-      </div>
-      <div class="overlay bg-opacity-5"></div>
-      <img src="http://placehold.it/1920x800" alt="" class="img-responsive"/> </div>
-  </section>
-  <!-- end header inner -->
-  <div class="clearfix"></div>
-  
   <section class="sec-padding">
-    <div class="demo-juicy-projects">
-      {%if 'jobs' in data%}
-      <div class="cbp-panel">
-        <div id="grid-container" >
-          {%for job in data.jobs%}
-          <div class="cbp-item graphic filter-identity">
-            <div class="cbp-caption">
-              <div class="cbp-caption-defaultWrap"> <img src="http://placehold.it/800x600" alt=""> </div>
-              <div class="cbp-caption-activeWrap">
-                <div class="cbp-l-caption-alignCenter">
-                  <div class="cbp-l-caption-body"> <a href="http://placehold.it/800x600" class="cbp-caption cbp-lightbox">More info</a> </div>
+    {%if 'house' in data%}
+    <div class="container">
+          <div class="col-md-6 col-sm-6">
+            <div class="feature-box-66 border">
+              <div class="image-holder"> <a href="#">
+                <img src="http://placehold.it/390x230" alt="" class="img-responsive"/></a> </div>
+              <div class="text-box-inner">
+                <h5 class="less-mar1"><a href="/properties/{{data.house.id}}">{{data.house.name}}</a></h5>
+                <div class="clearfix"></div>
+                <br/>
+                <div class="property-info">
+                  <div class="pull-left"><span><i class="fa fa-bed"></i>   {{data.house.rooms}} rooms</span></div>
+                  <div class="pull-right"><span><i class="fa fa-usd"></i> {{data.house.price}}</span></div>
                 </div>
-              </div>
-            </div>
-            <div class="cbp-l-grid-projects-title">agent id: {{job.agent_id}}</div>
-            <div class="cbp-l-grid-projects-desc">house id: {{job.house_id}}</div>
           </div>
-          <!--end item--> 
-          {%endfor%}
+          <!--end item-->
         </div>
-      </div>
-      {%else%}
+        <!--end left-->
+    </div>
+    {%else%}
       <div class="container">
         <div class="row">
           <div class="col-md-6"></div>
@@ -130,9 +114,8 @@
         </div>
       </div>
       {%endif%}
-    </div>
   </section>
-  <!--end section-->
+  <!-- end section -->
   <div class="clearfix"></div>
   
   <section class="section-fulldark sec-padding">
@@ -218,7 +201,6 @@
   </section>
   <!--end section-->
   <div class="clearfix"></div>
-  
   <section class="section-copyrights sec-moreless-padding">
     <div class="container">
       <div class="row">
@@ -228,7 +210,6 @@
   </section>
   <!--end section-->
   <div class="clearfix"></div>
-  
   <a href="#" class="scrollup green-3"></a><!-- end scroll to top of the page--> 
 </div>
 <!-- end site wraper --> 
@@ -252,13 +233,11 @@ itemTemplate:
 });
 </script> 
 <script src="js/mainmenu/customeUI.js"></script> 
-<script type="text/javascript" src="js/cubeportfolio/jquery.cubeportfolio.min.js"></script> 
-<script type="text/javascript" src="js/cubeportfolio/main-juicy.js"></script> 
 <script src="js/scrolltotop/totop.js"></script> 
 <script src="js/mainmenu/jquery.sticky.js"></script> 
  
 <script src="/static/js/mine.js"></script>
-<script>openUrl('jobs.html')</script>
-<script src="js/scripts/functions.js" type="text/javascript"></script> 
+<script>openUrl('properties-details.html/{{data.id}}')</script>
+<script src="js/scripts/functions.js" type="text/javascript"></script>
 </body>
 </html>
