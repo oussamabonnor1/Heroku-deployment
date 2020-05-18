@@ -28,7 +28,8 @@ def create_app(test_config=None):
         return render_template('index.html')
     
     @app.route('/agents.html')
-    def agents():
+    @requires_auth('get:agents')
+    def agents(permission):
         agents = get_agents()
         return render_template('agents.html', data=agents.json)
     
@@ -44,7 +45,8 @@ def create_app(test_config=None):
     
     @app.route('/jobs.html')
     def jobs():
-        return render_template('jobs.html')
+        jobs = get_jobs()
+        return render_template('jobs.html', data=jobs.json)
 
     @app.route('/login')
     def login():
@@ -52,7 +54,8 @@ def create_app(test_config=None):
 
     #================== Agents Endpoints =====================
     @app.route('/get-agents')
-    def get_agents():
+    @requires_auth('get:agents')
+    def get_agents(permission):
         agents = Agent.query.all()
         formatted_agents = [agent.format() for agent in agents]
         return jsonify({
@@ -124,7 +127,8 @@ def create_app(test_config=None):
 
     #================== Houses Endpoints =====================
     @app.route('/get-houses')
-    def get_houses():
+    @requires_auth('get:houses')
+    def get_houses(permission):
         houses = House.query.all()
         formatted_houses = [house.format() for house in houses]
         return jsonify({

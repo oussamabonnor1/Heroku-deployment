@@ -112,6 +112,7 @@
     <div class="demo-juicy-projects">
       <div class="cbp-panel">
         <div id="grid-container" >
+          {%for job in data.jobs%}
           <div class="cbp-item graphic filter-identity">
             <div class="cbp-caption">
               <div class="cbp-caption-defaultWrap"> <img src="http://placehold.it/800x600" alt=""> </div>
@@ -121,80 +122,11 @@
                 </div>
               </div>
             </div>
-            <div class="cbp-l-grid-projects-title">268 Green Hills Lane</div>
-            <div class="cbp-l-grid-projects-desc">Venenatis Quis</div>
-          </div>
-          <!--end item-->
-          
-          <div class="cbp-item graphic graphic">
-            <div class="cbp-caption">
-              <div class="cbp-caption-defaultWrap"> <img src="http://placehold.it/800x600" alt=""> </div>
-              <div class="cbp-caption-activeWrap">
-                <div class="cbp-l-caption-alignCenter">
-                  <div class="cbp-l-caption-body"> <a href="http://placehold.it/800x600" class="cbp-caption cbp-lightbox">More info</a> </div>
-                </div>
-              </div>
-            </div>
-            <div class="cbp-l-grid-projects-title">268 Green Hills Lane</div>
-            <div class="cbp-l-grid-projects-desc">Venenatis Quis</div>
-          </div>
-          <!--end item-->
-          
-          <div class="cbp-item graphic identity graphic logos">
-            <div class="cbp-caption">
-              <div class="cbp-caption-defaultWrap"> <img src="http://placehold.it/800x600" alt=""> </div>
-              <div class="cbp-caption-activeWrap">
-                <div class="cbp-l-caption-alignCenter">
-                  <div class="cbp-l-caption-body"> <a href="http://placehold.it/800x600" class="cbp-caption cbp-lightbox">More info</a> </div>
-                </div>
-              </div>
-            </div>
-            <div class="cbp-l-grid-projects-title">268 Green Hills Lane</div>
-            <div class="cbp-l-grid-projects-desc">Venenatis Quis</div>
-          </div>
-          <!--end item-->
-          
-          <div class="cbp-item graphic graphic">
-            <div class="cbp-caption">
-              <div class="cbp-caption-defaultWrap"> <img src="http://placehold.it/800x600" alt=""> </div>
-              <div class="cbp-caption-activeWrap">
-                <div class="cbp-l-caption-alignCenter">
-                  <div class="cbp-l-caption-body"> <a href="http://placehold.it/800x600" class="cbp-caption cbp-lightbox">More info</a> </div>
-                </div>
-              </div>
-            </div>
-            <div class="cbp-l-grid-projects-title">268 Green Hills Lane</div>
-            <div class="cbp-l-grid-projects-desc">Venenatis Quis</div>
-          </div>
-          <!--end item-->
-          
-          <div class="cbp-item graphic identity logos web-design">
-            <div class="cbp-caption">
-              <div class="cbp-caption-defaultWrap"> <img src="http://placehold.it/800x600" alt=""> </div>
-              <div class="cbp-caption-activeWrap">
-                <div class="cbp-l-caption-alignCenter">
-                  <div class="cbp-l-caption-body"> <a href="http://placehold.it/800x600" class="cbp-caption cbp-lightbox">More info</a> </div>
-                </div>
-              </div>
-            </div>
-            <div class="cbp-l-grid-projects-title">268 Green Hills Lane</div>
-            <div class="cbp-l-grid-projects-desc">Venenatis Quis</div>
-          </div>
-          <!--end item-->
-          
-          <div class="cbp-item graphic identity graphic web-design">
-            <div class="cbp-caption">
-              <div class="cbp-caption-defaultWrap"> <img src="http://placehold.it/800x600" alt=""> </div>
-              <div class="cbp-caption-activeWrap">
-                <div class="cbp-l-caption-alignCenter">
-                  <div class="cbp-l-caption-body"> <a href="http://placehold.it/800x600" class="cbp-caption cbp-lightbox">More info</a> </div>
-                </div>
-              </div>
-            </div>
-            <div class="cbp-l-grid-projects-title">268 Green Hills Lane</div>
-            <div class="cbp-l-grid-projects-desc">Venenatis Quis</div>
+            <div class="cbp-l-grid-projects-title">agent id: {{job.agent_id}}</div>
+            <div class="cbp-l-grid-projects-desc">house id: {{job.house_id}}</div>
           </div>
           <!--end item--> 
+          {%endfor%}
         </div>
       </div>
     </div>

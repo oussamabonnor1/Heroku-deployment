@@ -10,28 +10,21 @@ window.onload = function () {
   window.localStorage.setItem("access_token",parsedHash.get('access_token'));
   console.log(window.localStorage.getItem('access_token'));
 };
-// $('#call-properties').on('click', function (e) {
-//   e.preventDefault();
-//   console.log('called');
-//   $.ajax({
-//     url: 'http://localhost:5000/properties.html',
-//     type: 'GET',
-//     contentType: 'application/json',
-//     headers: {
-//       'Authorization': this.access_token
-//     },
-//     async: false,
-//     success: function (result) {
-//       $(body).html(result);
-//     },
-//     error: function (error) {
-//       console.log('error' + error);
-//     }
-//   });
-// });
-$('#call-properties').on('click', function (e) {
+$('#call-properties').on('click', function () {
+  openUrl('properties');
+})
+
+$('#call-agents').on('click', function () {
+  openUrl('agents');
+})
+
+$('#call-jobs').on('click', function () {
+  openUrl('jobs');
+})
+
+function openUrl(url) {
   var req = new XMLHttpRequest();
-  req.open('GET', 'http://localhost:5000/properties.html', true); //true means request will be async
+  req.open('GET', 'http://localhost:5000/'+url+'.html', true); //true means request will be async
   req.onreadystatechange = function (aEvt) {
     if (req.readyState == 4) {
       if (req.status == 200)
@@ -39,7 +32,7 @@ $('#call-properties').on('click', function (e) {
       document.body.innerHTML = req.responseText;
      else
         if (req.status == 401)
-        alert("Unauthorized, please login first");
+          req.open('GET', '401');
         else alert("error of type "+ req.status);
     }
   };
@@ -48,4 +41,4 @@ $('#call-properties').on('click', function (e) {
   req.setRequestHeader('Access-Control-Allow-Origin', '*');
   req.setRequestHeader('Content-Type', 'application/json');
   req.send();
-})
+}
