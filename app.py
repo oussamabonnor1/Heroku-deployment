@@ -1,10 +1,11 @@
 import os
-from flask import Flask, render_template, request, abort, jsonify, redirect
+from flask import Flask, render_template, request, abort, jsonify, redirect, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import sys
 from database.models import setup_db,db,House,Agent, Job
 from auth.auth import requires_auth, AuthError
+import json
 
 def create_app(test_config=None):
 
@@ -24,6 +25,23 @@ def create_app(test_config=None):
     @app.route('/index.html')
     def index():
         return render_template('index.html')
+    
+    @app.route('/agents.html')
+    def agents():
+        return render_template('agents.html')
+    
+    @app.route('/properties.html')
+    def properties():
+        houses = get_houses()
+        return render_template('properties.html', data=houses.json)
+    
+    @app.route('/contact.html')
+    def contact():
+        return render_template('contact.html')
+    
+    @app.route('/jobs.html')
+    def jobs():
+        return render_template('jobs.html')
 
     @app.route('/login')
     def login():
@@ -104,8 +122,7 @@ def create_app(test_config=None):
 
     #================== Houses Endpoints =====================
     @app.route('/get-houses')
-    @requires_auth('get:houses')
-    def get_houses(permission):
+    def get_houses():
         houses = House.query.all()
         formatted_houses = [house.format() for house in houses]
         return jsonify({

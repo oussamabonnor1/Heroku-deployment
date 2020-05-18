@@ -19,7 +19,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!-- Favicon -->
-<link rel="shortcut icon" href="images/favicon.ico">
+<link rel="shortcut icon" href="static/images/favicon.ico">
 
 <!-- Google fonts - witch you want to use - (rest you can just remove) -->
 <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>
@@ -30,17 +30,17 @@
 <![endif]-->
 
 <!-- Stylesheets -->
-<link rel="stylesheet" media="screen" href="js/bootstrap/bootstrap.min.css" type="text/css" />
-<link rel="stylesheet" href="js/mainmenu/menu.css" type="text/css" />
-<link rel="stylesheet" href="css/default.css" type="text/css" />
-<link rel="stylesheet" href="css/layouts.css" type="text/css" />
-<link rel="stylesheet" href="css/shortcodes.css" type="text/css" />
-<link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css">
-<link rel="stylesheet" media="screen" href="css/responsive-leyouts.css" type="text/css" />
-<link rel="stylesheet" type="text/css" href="js/cubeportfolio/cubeportfolio.min.css">
-<link rel="stylesheet" type="text/css" href="css/Simple-Line-Icons-Webfont/simple-line-icons.css" media="screen" />
-<link rel="stylesheet" href="css/et-line-font/et-line-font.css">
-<link rel="stylesheet" href="js/jFlickrFeed/style.css" />
+<link rel="stylesheet" media="screen" href="static/js/bootstrap/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" href="static/js/mainmenu/menu.css" type="text/css" />
+<link rel="stylesheet" href="static/css/default.css" type="text/css" />
+<link rel="stylesheet" href="static/css/layouts.css" type="text/css" />
+<link rel="stylesheet" href="static/css/shortcodes.css" type="text/css" />
+<link rel="stylesheet" href="static/css/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" media="screen" href="static/css/responsive-leyouts.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="static/js/cubeportfolio/cubeportfolio.min.css">
+<link rel="stylesheet" type="text/css" href="static/css/Simple-Line-Icons-Webfont/simple-line-icons.css" media="screen" />
+<link rel="stylesheet" href="static/css/et-line-font/et-line-font.css">
+<link rel="stylesheet" href="static/js/jFlickrFeed/style.css" />
 
 
 
@@ -84,12 +84,11 @@
         <div id="navbar-collapse-grid" class="navbar-collapse collapse pull-right">
           <ul class="nav green navbar-nav">
             <li><a href="index.html" class="dropdown-toggle">Home</a></li>
-            <li><a href="listings.html" class="dropdown-toggle">Listing</a></li>
             <li><a href="properties.html" class="dropdown-toggle">Properties</a></li>
-            <li><a href="gallery.html" class="dropdown-toggle active">Gallery</a></li>
+            <li><a href="jobs.html" class="dropdown-toggle active">Jobs</a></li>
             <li><a href="agents.html" class="dropdown-toggle">Agents</a></li>
             <li><a href="contact.html" class="dropdown-toggle">Contact</a></li>
-          </ul>
+                    </ul>
         </div>
       </div>
     </div>
@@ -112,25 +111,8 @@
   <section class="sec-padding">
     <div class="demo-juicy-projects">
       <div class="cbp-panel">
-        <div id="filters-container" class="cbp-l-filters-button style-4 ">
-          <div data-filter="*" class="cbp-filter-item-active cbp-filter-item"> All
-            <div class="cbp-filter-counter"></div>
-          </div>
-          <div data-filter=".identity" class="cbp-filter-item"> Apartments
-            <div class="cbp-filter-counter"></div>
-          </div>
-          <div data-filter=".web-design" class="cbp-filter-item"> Offices
-            <div class="cbp-filter-counter"></div>
-          </div>
-          <div data-filter=".graphic" class="cbp-filter-item"> Villas
-            <div class="cbp-filter-counter"></div>
-          </div>
-          <div data-filter=".logos" class="cbp-filter-item"> Residentails
-            <div class="cbp-filter-counter"></div>
-          </div>
-        </div>
-        <div id="grid-container" class="cbp">
-          <div class="cbp-item graphic identity">
+        <div id="grid-container" >
+          <div class="cbp-item graphic filter-identity">
             <div class="cbp-caption">
               <div class="cbp-caption-defaultWrap"> <img src="http://placehold.it/800x600" alt=""> </div>
               <div class="cbp-caption-activeWrap">
