@@ -37,6 +37,16 @@ def create_app(test_config=None):
         agents = get_agents()
         return render_template('agents.html', data=agents.json)
     
+    @app.route('/agents-details/<id>')
+    def agents_details_holder(id):
+        return render_template('agents-details.html', data=jsonify({'id':id}).json)
+
+    @app.route('/agents-details.html/<id>')
+    @requires_auth('get:agents')
+    def agents_details(permission, id):
+        agent = get_agent(id)
+        return render_template('agents-details.html', data=agent.json)
+
     @app.route('/properties')
     def properties_holder():
         return render_template('properties.html', data='')
@@ -70,6 +80,17 @@ def create_app(test_config=None):
     def jobs(permission):
         jobs = get_jobs()
         return render_template('jobs.html', data=jobs.json)
+
+    @app.route('/jobs-details/<agent_id>&<house_id>')
+    def jobs_details_holder(agent_id, house_id):
+        return render_template('jobs-details.html', data=jsonify({'agent_id':agent_id, 'house_id':house_id}).json)
+
+    @app.route('/jobs-details.html/<agent_id>&<house_id>')
+    @requires_auth('get:jobs')
+    def jobs_details(permission, agent_id, house_id):
+        job = get_job(agent_id, house_id)
+        return render_template('jobs-details.html', data=job.json)
+    
 
     @app.route('/login')
     def login():
@@ -238,11 +259,9 @@ def create_app(test_config=None):
             "jobs":formatted_jobs
         })
 
-    @app.route('/get-job')
+    @app.route('/get-job/<agent_id>&<house_id>')
     @requires_auth('get:jobs')
-    def get_job(permission):
-        agent_id = request.args.get('agent_id',-1)
-        house_id = request.args.get('house_id',-1)
+    def get_job(permission, agent_id, house_id):
         selected_job = Job.query.filter(Job.agent_id == agent_id and Job.house_id == house_id).one_or_none()
         if(selected_job is None):
             return not_found(404)
