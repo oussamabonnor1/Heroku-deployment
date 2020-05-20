@@ -21,11 +21,16 @@ def create_app(test_config=None):
 
     @app.route('/')
     def home():
-        return render_template('index.html')
-    
-    @app.route('/index.html')
-    def index():
-        return render_template('index.html')
+        houses = House.query.order_by(House.id.desc()).limit(3)
+        houses = [house.format() for house in houses]
+        agents = Agent.query.order_by(Agent.id.desc()).limit(4)
+        agents = [agent.format() for agent in agents]
+        data={
+            'houses':houses,
+            'agents':agents
+        }
+        print(data)
+        return render_template('index.html', data=data)
     
     @app.route('/agents')
     def agents_holder():
