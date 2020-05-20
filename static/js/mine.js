@@ -5,7 +5,7 @@ window.onload = function () {
   );
   if(parsedHash.get('access_token') != null)
   window.localStorage.setItem("access_token",parsedHash.get('access_token'));
-  if(window.localStorage.getItem('access_token') !== null){
+  if(window.localStorage.getItem('access_token') !== 'null'){
     console.log("access: "+window.localStorage.getItem('access_token'));
     document.getElementById('login-bar').innerHTML = 'Refresh Token';
     document.getElementById('action-buttons').innerHTML += '<li class="last" style="margin-top: 10px;"><span class="call-us-box"><a id="logout-button" onclick="logout();" style="color: white;">Logout</a></span></li>'
@@ -45,7 +45,9 @@ function openUrl(url) {
 }
 
 function logout() {
-  window.localStorage.setItem("access_token",null);
+  window.localStorage.setItem('access_token','null');
   console.log(window.localStorage.getItem('access_token'));
-  openUrl("");
+  var req = new XMLHttpRequest();
+  window.open('https://sagemodeboy.eu.auth0.com/v2/logout');
+  openUrl('');
 }

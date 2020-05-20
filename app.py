@@ -29,7 +29,6 @@ def create_app(test_config=None):
             'houses':houses,
             'agents':agents
         }
-        print(data)
         return render_template('index.html', data=data)
     
     @app.route('/agents')
