@@ -292,15 +292,16 @@ def create_app(test_config=None):
             return unprocessable(422)
         return get_jobs()
 
-    @app.route('/update-job', methods=['PUT'])
+    @app.route('/update-job/<agent_id>&<house_id>', methods=['PUT'])
     @requires_auth('put:jobs')
-    def update_job(permission):
-        agent_id = request.args.get('agent_id',-1)
-        house_id = request.args.get('house_id',-1)
+    def update_job(permission, agent_id, house_id):
         selected_job = Job.query.filter(Job.agent_id == agent_id and Job.house_id == house_id).one_or_none()
         if selected_job is None:
             return not_found(404)
         else:
+            body = request.get_json()
+            agent_id=body.get('agent_id','-1'),
+            house_id=body.get('house_id', '-1'),
             try:
                 selected_job.agent_id = agent_id 
                 selected_job.house_id = house_id
@@ -311,11 +312,9 @@ def create_app(test_config=None):
                 return unprocessable(422)
             return get_jobs()
 
-    @app.route('/delete-job', methods=['DELETE'])
+    @app.route('/delete-job/<agent_id>&<house_id>', methods=['DELETE'])
     @requires_auth('delete:jobs')
-    def delete_job(permission):
-        agent_id = request.args.get('agent_id',-1)
-        house_id = request.args.get('house_id',-1)
+    def delete_job(permission, agent_id, house_id):
         selected_job = Job.query.filter(Job.agent_id == agent_id and Job.house_id == house_id).one_or_none()
         
         if selected_job is None:

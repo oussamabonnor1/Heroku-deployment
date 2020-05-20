@@ -11,7 +11,7 @@ class TestAppWrapper(object):
         self.app = app
 
     def __call__(self, environ, start_response):
-        environ['HTTP_AUTHORIZATION'] = 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik56SkdOekF6UXpORFJqaENNekV6UlRCQlJVSTFSa1JEUkVKQ016VkZRek5DUWpCQk9FVXhOdyJ9.eyJpc3MiOiJodHRwczovL3NhZ2Vtb2RlYm95LmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJnb29nbGUtb2F1dGgyfDExNzEzOTAzMTUzNjk3NzUxMTQxMiIsImF1ZCI6WyJDYXBzdG9uZUFQSSIsImh0dHBzOi8vc2FnZW1vZGVib3kuZXUuYXV0aDAuY29tL3VzZXJpbmZvIl0sImlhdCI6MTU4OTY3ODk0NCwiZXhwIjoxNTg5NzUwOTQ0LCJhenAiOiJhb3RJa3ZXdjBLZjdIaWtRRWVXMEVpbXRmQTFScVByTiIsInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwiLCJwZXJtaXNzaW9ucyI6WyJkZWxldGU6YWdlbnRzIiwiZGVsZXRlOmhvdXNlcyIsImRlbGV0ZTpqb2JzIiwiZ2V0OmFnZW50cyIsImdldDpob3VzZXMiLCJnZXQ6am9icyIsInBvc3Q6YWdlbnRzIiwicG9zdDpob3VzZXMiLCJwb3N0OmpvYnMiLCJwdXQ6YWdlbnRzIiwicHV0OmhvdXNlcyIsInB1dDpqb2JzIl19.MX9WqKAVqZ2vlasS2-zbTM9ckuC1ARHqh5_DAhQpMovbAh_yl4PviFSgeInLtjPqtD_30b1B_3rJwKLjr66Cp2SA-Ftzx601SPYC5MTSbQBiHEbWDVzlG3ms4vtBF1-g4OdFoqDOab44RvtfNQkvotB4NSMF_4R8I8SCzllUvHv3LuKWtVcj5_URTK56wXp74Rz7fE299GDO7Ye1rK4SsLkSuSZK9gwzivDlwBCXmKxVEYstbljhQLpdREaooCQMuo8kzBKbjM1wu3b--iUQ5ONys53-BqbTQI0CNrwHxhwF4KF6zSKHQL3Uyb97OqGX1wMSKf-eeGqyvK-mfUN06g'
+        environ['HTTP_AUTHORIZATION'] = 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik56SkdOekF6UXpORFJqaENNekV6UlRCQlJVSTFSa1JEUkVKQ016VkZRek5DUWpCQk9FVXhOdyJ9.eyJpc3MiOiJodHRwczovL3NhZ2Vtb2RlYm95LmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw1ZWM0MGU3M2M5ZmQ2MjBiZjE5M2UwYzkiLCJhdWQiOiJDYXBzdG9uZUFQSSIsImlhdCI6MTU4OTkyODM2MCwiZXhwIjoxNTkwMDAwMzYwLCJhenAiOiJhb3RJa3ZXdjBLZjdIaWtRRWVXMEVpbXRmQTFScVByTiIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFnZW50cyIsImRlbGV0ZTpob3VzZXMiLCJkZWxldGU6am9icyIsImdldDphZ2VudHMiLCJnZXQ6aG91c2VzIiwiZ2V0OmpvYnMiLCJwb3N0OmFnZW50cyIsInBvc3Q6aG91c2VzIiwicG9zdDpqb2JzIiwicHV0OmFnZW50cyIsInB1dDpob3VzZXMiLCJwdXQ6am9icyJdfQ.WW4ywZ-rEzv-mkVjpD6BKjbI__-eX0z5c1GCb9cnBLB6NTPM_ZRvVFCFOW4FlRqCwjRPZpOnnpYeek5LNhI8tjoO-9zkvZiijzZvWkkYOwIn4pnwOSghxrodHySPnuBEkoocU61GY5zt6qfVzjPWDJsgvENbekAcMNxmCx0PwnySdOnJ0c3QT4WUJZQ9fFpa-Vv8nAgZPsBvrjYP1i33umf_SxAL1nF5CIWVa4tNSxRZpCVgFT5k9GikzVL9Pd6wfFuSdslW0VK1gGd0zN7oQaMxEfYhTR6mTPny9YipFbYkbKczg4IfRL4RH0T9djK2cDpA2FKgrGx7cN-yoAkyXA'
         return self.app(environ, start_response)
 
 class CapstoneTest(unittest.TestCase):
@@ -158,7 +158,7 @@ class CapstoneTest(unittest.TestCase):
     def test_csget_job(self):
         job = Job.query.order_by(Job.agent_id.desc()).first()
         print(f"get {job.agent_id}/{job.house_id}")
-        res = self.client().get(f'/get-job?agent_id={job.agent_id}&house_id={job.house_id}')
+        res = self.client().get(f'/get-job/{job.agent_id}&{job.house_id}')
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
@@ -170,7 +170,7 @@ class CapstoneTest(unittest.TestCase):
             'agent_id': job.agent_id,
             'house_id': job.house_id
         }
-        res = self.client().put(f'/update-job?agent_id={job.agent_id}&house_id={job.house_id}')
+        res = self.client().put(f'/update-job/{job.agent_id}&{job.house_id}', json=update_job)
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
@@ -179,7 +179,7 @@ class CapstoneTest(unittest.TestCase):
         self.test_create_job()
         job = Job.query.order_by(Job.agent_id.desc()).first()
         print(f"delete {job.agent_id}/{job.house_id}")
-        res = self.client().delete(f'/delete-job?agent_id={job.agent_id}&house_id={job.house_id}')
+        res = self.client().delete(f'/delete-job/{job.agent_id}&{job.house_id}')
         data = json.loads(res.data)
         job = Job.query.filter(Job.agent_id == job.agent_id and Job.house_id == job.house_id).one_or_none()
         self.assertEqual(res.status_code, 200)
