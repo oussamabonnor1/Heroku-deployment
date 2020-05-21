@@ -25,11 +25,10 @@ $('#call-jobs').on('click', function () {
 
 function openUrl(url) {
   var req = new XMLHttpRequest();
-  req.open('GET', 'http://localhost:5000/'+url, true); //true means request will be async
+  req.open('GET', url, true); //true means request will be async
   req.onreadystatechange = function (aEvt) {
     if (req.readyState == 4) {
       if (req.status == 200)
-      //update your page here
       document.body.innerHTML = req.responseText;
      else
         if (req.status == 401)
@@ -40,6 +39,8 @@ function openUrl(url) {
   console.log(window.localStorage.getItem('access_token'));
   req.setRequestHeader('Authorization', 'Bearer '+ window.localStorage.getItem('access_token'));
   req.setRequestHeader('Access-Control-Allow-Origin', '*');
+  req.setRequestHeader('Access-Control-Allow-Headers', '*');
+  req.setRequestHeader('Access-Control-Allow-Methods', '*');
   req.setRequestHeader('Content-Type', 'application/json');
   req.send();
 }
@@ -47,7 +48,6 @@ function openUrl(url) {
 function logout() {
   window.localStorage.setItem('access_token','null');
   console.log(window.localStorage.getItem('access_token'));
-  var req = new XMLHttpRequest();
-  window.open('https://sagemodeboy.eu.auth0.com/v2/logout');
-  openUrl('');
+  window.location.href ='https://sagemodeboy.eu.auth0.com/v2/logout';
+  
 }
