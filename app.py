@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, abort, jsonify, redirect, request
+from flask import Flask, render_template, request, abort, jsonify, redirect, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import sys
@@ -60,6 +60,10 @@ def create_app(test_config=None):
     def properties(permission):
         houses = get_houses()
         return render_template('properties.html', data=houses.json)
+
+    @app.route('/properties/create', methods=['GET'])
+    def create_property_form():
+        return render_template('forms/new-property.html')
 
     @app.route('/properties-details/<id>')
     def properties_details_holder(id):
@@ -177,7 +181,7 @@ def create_app(test_config=None):
     @app.route('/get-houses')
     @requires_auth('get:houses')
     def get_houses(permission):
-        houses = House.query.all()
+        houses = House.query.order_by(House.id.desc()).all()
         formatted_houses = [house.format() for house in houses]
         return jsonify({
             "success":True,

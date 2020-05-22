@@ -47,6 +47,7 @@
   <link rel="stylesheet" href="/static/js/jFlickrFeed/style.css" />
 
 
+  <link rel="stylesheet" type="text/css" href="/static/js/smart-forms/smart-forms.css">
 
 
   <!-- Remove the below comments to use your color option -->
@@ -92,43 +93,62 @@
     <!--end menu-->
     <div class="clearfix"></div>
 
-    <section class="sec-padding">
-      {%if 'house' in data%}
-      <div class="container">
-        <div class="col-md-6 col-sm-6">
-          <div class="feature-box-66 border">
-            <div class="image-holder"> <a href="#">
-                <img src="http://placehold.it/390x230" alt="" class="img-responsive" /></a> </div>
-            <div class="text-box-inner">
-              <h5 class="less-mar1"><a href="/properties/{{data.house.id}}">{{data.house.name}}</a></h5>
-              <div class="clearfix"></div>
-              <br />
-              <div class="property-info">
-                <div class="pull-left"><span><i class="fa fa-bed"></i> {{data.house.rooms}} rooms</span></div>
-                <div class="pull-right"><span><i class="fa fa-usd"></i> {{data.house.price}}</span></div>
-              </div>
-            </div>
-            <!--end item-->
-          </div>
+    <section>
+      <div class="header-inner two">
+        <div class="inner text-center">
+          <h4 class="title text-white uppercase">Create a new house</h4>
+          <h5 class="text-white uppercase">Please fill out the form below</h5>
         </div>
-        <div class="smart-forms">
-          <div class="form-footer">
-            <form method="post" action="php/smartprocess.php" id="smart-form">
-              <button type="submit" data-btntext-sending="Sending..." class="button btn-primary green">Update</button>
-              <button type="reset" class="button">Delete</button>
+        <div class="overlay bg-opacity-5"></div>
+      </div>
+      
+    <div class="clearfix"></div>
+    </section>
+
+    <section class="sec-padding">
+      <div class="container">
+        <div class="col-md-3 clearfix"></div>
+        <div class="col-md-6 clearfix">
+          <div class="smart-forms">
+            <form method="post" id="property-creation-form">
+              <div>
+                <div class="section">
+                  <label class="field prepend-icon">
+                    <input id="name" type="text" name="name" placeholder="House name" class="gui-input">
+                    <span class="field-icon"><i class="fa fa-home"></i></span>
+                  </label>
+                </div>
+                <div class="section">
+                  <label class="field prepend-icon">
+                    <input id="rooms" type="text" name="rooms" placeholder="Rooms (Ex: 3)" class="gui-input">
+                    <span class="field-icon"><i class="fa fa-bed"></i></span>
+                  </label>
+                </div>
+                <div class="section">
+                  <label class="field prepend-icon">
+                    <input id="price" type="text" name="price" placeholder="Price (Ex: 1500)" class="gui-input">
+                    <span class="field-icon"><i class="fa fa-usd"></i></span>
+                  </label>
+                </div>
+                <div class="section">
+                  <label class="field prepend-icon">
+                    <input id="picture" type="text" name="picture" placeholder="picture url" class="gui-input">
+                    <span class="field-icon"><i class="fa fa-picture-o"></i></span>
+                  </label>
+                </div>
+
+                <div class="result"></div><!-- end .result  section -->
+
+              </div><!-- end .form-body section -->
+              <div class="form-footer">
+                <button type="submit" data-btntext-sending="Sending..." class="button btn-primary green">Submit</button>
+              </div><!-- end .form-footer section -->
             </form>
           </div>
+
         </div>
+        <div class="col-md-3 clearfix"></div>
       </div>
-      {%else%}
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6"></div>
-          <div class="col-md-1"><img src="/static/js/owl-carousel/AjaxLoader.gif" alt="" /></div>
-          <div class="col-md-5"></div>
-        </div>
-      </div>
-      {%endif%}
     </section>
     <!-- end section -->
     <div class="clearfix"></div>
@@ -256,7 +276,7 @@
   <script src="/static/js/mainmenu/jquery.sticky.js"></script>
 
   <script src="/static/js/mine.js"></script>
-  <script>openUrl('properties-details.html/{{data.id}}')</script>
+  <script src="/static/js/actions.js"></script>
   <script src="/static/js/scripts/functions.js" type="text/javascript"></script>
 </body>
 
