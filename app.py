@@ -64,6 +64,11 @@ def create_app(test_config=None):
     @app.route('/properties/create', methods=['GET'])
     def create_property_form():
         return render_template('forms/new-property.html')
+    
+    @app.route('/properties/update/<id>', methods=['GET'])
+    def update_property_form(id):
+        house = House.query.filter(House.id == id).one_or_none()
+        return render_template('forms/update-property.html', data=house.format())
 
     @app.route('/properties-details/<id>')
     def properties_details_holder(id):
