@@ -111,7 +111,7 @@
           {% for house in data.houses%}
           <div class="col-md-6 col-sm-6">
             <div class="feature-box-66 border">
-              <div class="image-holder"> <a href="#">
+              <div class="image-holder"> <a href="/properties-details/{{house.id}}">
                 <div class="status">Available</div>
                 <img src="http://placehold.it/390x230" alt="" class="img-responsive"/></a> </div>
               <div class="text-box-inner">
@@ -288,7 +288,7 @@ itemTemplate:
 <script src="/static/js/mainmenu/jquery.sticky.js"></script> 
  
 <script src="/static/js/mine.js"></script>
-<script>openUrl('properties.html')</script>
+<script>openUrl('/properties.html')</script>
 <script src="/static/js/scripts/functions.js" type="text/javascript"></script>
 </body>
 </html>
