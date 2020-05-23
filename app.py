@@ -35,6 +35,10 @@ def create_app(test_config=None):
     def agents_holder():
         return render_template('agents.html', data='')
 
+    @app.route('/agents/create', methods=['GET'])
+    def create_agent_form():
+        return render_template('forms/new-agent.html')
+
     @app.route('/agents.html')
     @requires_auth('get:agents')
     def agents(permission):
@@ -113,7 +117,7 @@ def create_app(test_config=None):
     @app.route('/get-agents')
     @requires_auth('get:agents')
     def get_agents(permission):
-        agents = Agent.query.all()
+        agents = Agent.query.order_by(Agent.id.desc()).all()
         formatted_agents = [agent.format() for agent in agents]
         return jsonify({
             "success":True,
