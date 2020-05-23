@@ -103,6 +103,15 @@ def create_app(test_config=None):
         jobs = get_jobs()
         return render_template('jobs.html', data=jobs.json)
 
+    @app.route('/jobs/create', methods=['GET'])
+    def create_job_form():
+        return render_template('forms/new-job.html')
+
+    @app.route('/jobs/update/<agent_id>&<house_id>', methods=['GET'])
+    def update_job_form(agent_id, house_id):
+        job = Job.query.filter(Job.agent_id == agent_id and Job.house_id == house_id).one_or_none()
+        return render_template('forms/update-job.html', data=job.format())
+
     @app.route('/jobs-details/<agent_id>&<house_id>')
     def jobs_details_holder(agent_id, house_id):
         return render_template('jobs-details.html', data=jsonify({'agent_id':agent_id, 'house_id':house_id}).json)
@@ -274,7 +283,7 @@ def create_app(test_config=None):
     @app.route('/get-jobs')
     @requires_auth('get:jobs')
     def get_jobs(permission):
-        jobs = Job.query.all()
+        jobs = Job.query.order_by(Job.agent_id.desc()).all()
         formatted_jobs = [job.format() for job in jobs]
         return jsonify({
             "success":True,
