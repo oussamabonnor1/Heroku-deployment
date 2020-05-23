@@ -24,7 +24,7 @@ $('#call-jobs').on('click', function () {
 
 function openUrl(url) {
   var req = new XMLHttpRequest();
-  req.open('GET', "http://127.0.0.1:5000/"+url, true); //true means request will be async
+  req.open('GET', "https://sagemodeboy.herokuapp.com/"+url, true); //true means request will be async
   req.onreadystatechange = function (aEvt) {
     if (req.readyState == 4) {
       if (req.status == 200)
