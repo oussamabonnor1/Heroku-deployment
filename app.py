@@ -39,6 +39,11 @@ def create_app(test_config=None):
     def create_agent_form():
         return render_template('forms/new-agent.html')
 
+    @app.route('/agents/update/<id>', methods=['GET'])
+    def update_agent_form(id):
+        agent = Agent.query.filter(Agent.id == id).one_or_none()
+        return render_template('forms/update-agent.html', data=agent.format())
+
     @app.route('/agents.html')
     @requires_auth('get:agents')
     def agents(permission):
