@@ -19,6 +19,9 @@ def create_app(test_config=None):
     setup_db(app)
     CORS(app)
 
+    #====================FRONTEND ENDPOINTS=========================
+    #BACKEND API CODE STARTS AT LINE 133
+
     @app.route('/')
     def home():
         houses = House.query.order_by(House.id.desc()).limit(3)
@@ -122,7 +125,6 @@ def create_app(test_config=None):
         job = get_job(agent_id, house_id)
         return render_template('jobs-details.html', data=job.json)
     
-
     @app.route('/login')
     def login():
         return redirect(login_url)
