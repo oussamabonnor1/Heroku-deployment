@@ -3,7 +3,8 @@ import unittest
 import json
 from flask_sqlalchemy import SQLAlchemy
 from app import create_app
-from database.models import setup_db,db, House, Agent, Job
+from database.models import setup_db, db, House, Agent, Job
+
 
 class TestAppWrapper(object):
 
@@ -11,8 +12,9 @@ class TestAppWrapper(object):
         self.app = app
 
     def __call__(self, environ, start_response):
-        environ['HTTP_AUTHORIZATION'] = 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik56SkdOekF6UXpORFJqaENNekV6UlRCQlJVSTFSa1JEUkVKQ016VkZRek5DUWpCQk9FVXhOdyJ9.eyJpc3MiOiJodHRwczovL3NhZ2Vtb2RlYm95LmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw1ZWM0MGU3M2M5ZmQ2MjBiZjE5M2UwYzkiLCJhdWQiOiJDYXBzdG9uZUFQSSIsImlhdCI6MTU4OTkyODM2MCwiZXhwIjoxNTkwMDAwMzYwLCJhenAiOiJhb3RJa3ZXdjBLZjdIaWtRRWVXMEVpbXRmQTFScVByTiIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFnZW50cyIsImRlbGV0ZTpob3VzZXMiLCJkZWxldGU6am9icyIsImdldDphZ2VudHMiLCJnZXQ6aG91c2VzIiwiZ2V0OmpvYnMiLCJwb3N0OmFnZW50cyIsInBvc3Q6aG91c2VzIiwicG9zdDpqb2JzIiwicHV0OmFnZW50cyIsInB1dDpob3VzZXMiLCJwdXQ6am9icyJdfQ.WW4ywZ-rEzv-mkVjpD6BKjbI__-eX0z5c1GCb9cnBLB6NTPM_ZRvVFCFOW4FlRqCwjRPZpOnnpYeek5LNhI8tjoO-9zkvZiijzZvWkkYOwIn4pnwOSghxrodHySPnuBEkoocU61GY5zt6qfVzjPWDJsgvENbekAcMNxmCx0PwnySdOnJ0c3QT4WUJZQ9fFpa-Vv8nAgZPsBvrjYP1i33umf_SxAL1nF5CIWVa4tNSxRZpCVgFT5k9GikzVL9Pd6wfFuSdslW0VK1gGd0zN7oQaMxEfYhTR6mTPny9YipFbYkbKczg4IfRL4RH0T9djK2cDpA2FKgrGx7cN-yoAkyXA'
+        environ['HTTP_AUTHORIZATION'] = f'Bearer {os.environ.get("TEST_TOKEN")}'
         return self.app(environ, start_response)
+
 
 class CapstoneTest(unittest.TestCase):
 
@@ -22,7 +24,7 @@ class CapstoneTest(unittest.TestCase):
         self.app.wsgi_app = TestAppWrapper(self.app.wsgi_app)
         self.client = self.app.test_client
         self.database_name = "capstone_test"
-        self.database_path = "postgres://{}:{}@{}/{}".format('postgres', '','localhost:5432', self.database_name)
+        self.database_path = os.environ.get("DATABASE_URL")
         setup_db(self.app)
 
         # binds the app to the current context
@@ -32,13 +34,13 @@ class CapstoneTest(unittest.TestCase):
             self.db.init_app(self.app)
             # create all tables
             self.db.create_all()
-    
+
     def tearDown(self):
         """Executed after reach test"""
         pass
-    
-    #=====================Success test area===============================
-    #=====================Agents test area success========================
+
+    # =====================Success test area===============================
+    # =====================Agents test area success========================
     def test_get_agents(self):
         res = self.client().get('/get-agents')
         data = json.loads(res.data)
@@ -51,13 +53,13 @@ class CapstoneTest(unittest.TestCase):
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-    
+
     def test_create_agent(self):
         new_agent = {
             'name': 'some agent',
             'age': 27,
         }
-        res = self.client().post('/create-agent', json = new_agent)
+        res = self.client().post('/create-agent', json=new_agent)
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
@@ -68,7 +70,7 @@ class CapstoneTest(unittest.TestCase):
             'age': 27,
         }
         id = Agent.query.order_by(Agent.id.desc()).first().id
-        res = self.client().put(f'/update-agent/{id}', json = update_agent)
+        res = self.client().put(f'/update-agent/{id}', json=update_agent)
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
@@ -84,7 +86,7 @@ class CapstoneTest(unittest.TestCase):
         self.assertEqual(data['success'], True)
         self.assertEqual(agent, None)
 
-    #=====================Houses test area success========================
+    # =====================Houses test area success========================
     def test_get_houses(self):
         res = self.client().get('/get-houses')
         data = json.loads(res.data)
@@ -97,14 +99,14 @@ class CapstoneTest(unittest.TestCase):
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-    
+
     def test_create_house(self):
         new_house = {
             'name': "some house",
             'rooms': 4,
             'price': 1525,
         }
-        res = self.client().post('/create-house', json = new_house)
+        res = self.client().post('/create-house', json=new_house)
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
@@ -116,7 +118,7 @@ class CapstoneTest(unittest.TestCase):
             'price': 1525,
         }
         id = House.query.order_by(House.id.desc()).first().id
-        res = self.client().put(f'/update-house/{id}', json = update_house)
+        res = self.client().put(f'/update-house/{id}', json=update_house)
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
@@ -132,13 +134,13 @@ class CapstoneTest(unittest.TestCase):
         self.assertEqual(data['success'], True)
         self.assertEqual(house, None)
 
-    #=====================Jobs test area success========================
+    # =====================Jobs test area success========================
     def test_get_jobs(self):
         res = self.client().get('/get-jobs')
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-    
+
     def test_create_job(self):
         self.test_create_agent()
         self.test_create_house()
@@ -150,11 +152,11 @@ class CapstoneTest(unittest.TestCase):
             'house_id': house_id
         }
         print(f"create job {new_job}")
-        res = self.client().post('/create-job', json = new_job)
+        res = self.client().post('/create-job', json=new_job)
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-    
+
     def test_csget_job(self):
         job = Job.query.order_by(Job.agent_id.desc()).first()
         print(f"get {job.agent_id}/{job.house_id}")
@@ -170,7 +172,8 @@ class CapstoneTest(unittest.TestCase):
             'agent_id': job.agent_id,
             'house_id': job.house_id
         }
-        res = self.client().put(f'/update-job/{job.agent_id}&{job.house_id}', json=update_job)
+        res = self.client().put(
+            f'/update-job/{job.agent_id}&{job.house_id}', json=update_job)
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
@@ -179,33 +182,35 @@ class CapstoneTest(unittest.TestCase):
         self.test_create_job()
         job = Job.query.order_by(Job.agent_id.desc()).first()
         print(f"delete {job.agent_id}/{job.house_id}")
-        res = self.client().delete(f'/delete-job/{job.agent_id}&{job.house_id}')
+        res = self.client().delete(
+            f'/delete-job/{job.agent_id}&{job.house_id}')
         data = json.loads(res.data)
-        job = Job.query.filter(Job.agent_id == job.agent_id and Job.house_id == job.house_id).one_or_none()
+        job = Job.query.filter(
+            Job.agent_id == job.agent_id and Job.house_id == job.house_id).one_or_none()
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertEqual(job, None)
 
-    #====================Test fail area=========================  
-    #====================Test Agent area========================
+    # ====================Test fail area=========================
+    # ====================Test Agent area========================
     def test_get_agent_not_found(self):
-        
+
         res = self.client().get('/get-agent/350')
         data = json.loads(res.data)
-        self.assertEqual(res.status_code,404)
-        self.assertEqual(data['success'],False)
-        self.assertEqual(data['message'],'not found')
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'not found')
 
     def test_create_agent_not_allowed(self):
         new_agent = {
             'name': 'some agent',
             'age': 27,
         }
-        res = self.client().post('/get-agents', json = new_agent)
+        res = self.client().post('/get-agents', json=new_agent)
         data = json.loads(res.data)
-        self.assertEqual(res.status_code,405)
-        self.assertEqual(data['success'],False)
-        self.assertEqual(data['message'],'Method not allowed')
+        self.assertEqual(res.status_code, 405)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'Method not allowed')
 
     def test_update_agent_not_found(self):
         update_agent = {
@@ -213,7 +218,7 @@ class CapstoneTest(unittest.TestCase):
             'age': 27,
         }
         id = 350
-        res = self.client().put(f'/update-agent/{id}', json = update_agent)
+        res = self.client().put(f'/update-agent/{id}', json=update_agent)
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data['success'], False)
@@ -227,25 +232,25 @@ class CapstoneTest(unittest.TestCase):
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], "not found")
 
-    #====================Test House area========================
+    # ====================Test House area========================
     def test_get_house_not_found(self):
-        
+
         res = self.client().get('/get-house/350')
         data = json.loads(res.data)
-        self.assertEqual(res.status_code,404)
-        self.assertEqual(data['success'],False)
-        self.assertEqual(data['message'],'not found')
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'not found')
 
     def test_create_house_not_allowed(self):
         new_house = {
             'name': 'some house',
             'age': 27,
         }
-        res = self.client().post('/get-houses', json = new_house)
+        res = self.client().post('/get-houses', json=new_house)
         data = json.loads(res.data)
-        self.assertEqual(res.status_code,405)
-        self.assertEqual(data['success'],False)
-        self.assertEqual(data['message'],'Method not allowed')
+        self.assertEqual(res.status_code, 405)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'Method not allowed')
 
     def test_update_house_not_found(self):
         update_house = {
@@ -253,7 +258,7 @@ class CapstoneTest(unittest.TestCase):
             'age': 27,
         }
         id = 350
-        res = self.client().put(f'/update-house/{id}', json = update_house)
+        res = self.client().put(f'/update-house/{id}', json=update_house)
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data['success'], False)
@@ -267,32 +272,32 @@ class CapstoneTest(unittest.TestCase):
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], "not found")
 
-    #====================Test Job area========================
+    # ====================Test Job area========================
     def test_get_job_not_found(self):
-        
+
         res = self.client().get('/get-job?agent_id=350&house_id=350')
         data = json.loads(res.data)
-        self.assertEqual(res.status_code,404)
-        self.assertEqual(data['success'],False)
-        self.assertEqual(data['message'],'not found')
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'not found')
 
     def test_create_job_not_allowed(self):
         new_job = {
-             'agent_id': 1,
-             'house_id': 1
+            'agent_id': 1,
+            'house_id': 1
         }
-        res = self.client().post('/get-jobs', json = new_job)
+        res = self.client().post('/get-jobs', json=new_job)
         data = json.loads(res.data)
-        self.assertEqual(res.status_code,405)
-        self.assertEqual(data['success'],False)
-        self.assertEqual(data['message'],'Method not allowed')
+        self.assertEqual(res.status_code, 405)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'Method not allowed')
 
     def test_update_job_not_found(self):
         update_job = {
-             'agent_id': 1,
-             'house_id': 1
+            'agent_id': 1,
+            'house_id': 1
         }
-        res = self.client().put(f'/update-job?agent_id=350&house_id=350', json = update_job)
+        res = self.client().put(f'/update-job?agent_id=350&house_id=350', json=update_job)
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data['success'], False)
@@ -304,6 +309,7 @@ class CapstoneTest(unittest.TestCase):
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], "not found")
+
 
 # Make the tests conveniently executable
 if __name__ == "__main__":

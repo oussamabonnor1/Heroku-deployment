@@ -44,7 +44,9 @@ Job with attributes agent_id, house_id
 
 In the `setup.sh` file, you will find:
 - DATABASE_URL
-- TOKEN
+- TEST_TOKEN
+- AUTH0_DOMAIN
+- API_AUDIENCE
 - LOGIN_URL: the auth0 login(to handle local and heroku logins)
 
 ## Roles
@@ -73,6 +75,13 @@ In the `setup.sh` file, you will find:
 - post:agents
 
 ## Endpoints
+
+### Login
+`````bash
+GET '/login'
+ 
+this endpoint will help you login in an easy and fast way
+`````
 
 ### Agents
 `````bash

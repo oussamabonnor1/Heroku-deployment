@@ -3,24 +3,27 @@ from flask import request, _request_ctx_stack, abort
 from functools import wraps
 from jose import jwt
 from urllib.request import urlopen
+import os
 
-AUTH0_DOMAIN = 'sagemodeboy.eu.auth0.com'
+AUTH0_DOMAIN = os.environ.get('AUTH0_DOMAIN')
 ALGORITHMS = ['RS256']
-API_AUDIENCE = 'CapstoneAPI'
+API_AUDIENCE = os.environ.get('API_AUDIENCE')
 
 
-## AuthError Exception
+# AuthError Exception
 '''
 AuthError Exception
 A standardized way to communicate auth failure modes
 '''
+
+
 class AuthError(Exception):
     def __init__(self, error, status_code):
         self.error = error
         self.status_code = status_code
 
 
-## Auth Header
+# Auth Header
 
 def get_token_auth_header():
     auth = request.headers.get('Authorization', None)
@@ -52,12 +55,14 @@ def get_token_auth_header():
     token = parts[1]
     return token
 
+
 def check_permission(permission, payload):
     if 'permissions' not in payload:
         abort(400)
     if permission not in payload['permissions']:
         abort(403)
     return True
+
 
 def verify_decode_jwt(token):
     jsonurl = urlopen(f'https://{AUTH0_DOMAIN}/.well-known/jwks.json')
@@ -108,9 +113,10 @@ def verify_decode_jwt(token):
                 'description': 'Unable to parse authentication token.'
             }, 400)
     raise AuthError({
-                'code': 'invalid_header',
+        'code': 'invalid_header',
                 'description': 'Unable to find the appropriate key.'
-            }, 400)
+    }, 400)
+
 
 def requires_auth(permission=''):
     def requires_auth_permission(f):
