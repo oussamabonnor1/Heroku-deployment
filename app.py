@@ -10,9 +10,7 @@ import http
 
 def create_app(test_config=None):
 
-    login_url = f"https://sagemodeboy.eu.auth0.com/authorize?audience=CapstoneAPI&response_type=token&client_id=aotIkvWv0Kf7HikQEeW0EimtfA1RqPrN&redirect_uri={os.environ.get('CALLBACK','https://127.0.0.1:5000')}"
-
-    token = os.environ.get("TOKEN","no token")
+    login_url = os.environ.get("LOGIN_URL")
 
     app = Flask(__name__)
     app.config["TEMPLATES_AUTO_RELOAD"] = True

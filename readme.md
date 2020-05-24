@@ -45,7 +45,7 @@ Job with attributes agent_id, house_id
 In the `setup.sh` file, you will find:
 - DATABASE_URL
 - TOKEN
-- CALLBACK: the auth0 callback(to handle local and heroku logins)
+- LOGIN_URL: the auth0 login(to handle local and heroku logins)
 
 ## Roles
 
