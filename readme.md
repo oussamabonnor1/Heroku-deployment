@@ -1,8 +1,6 @@
-# FSND Retail Agency Capstone project
+# Retail Agency web app
 
-## capstone project for the udacity full stack nanodegree program.
-
-**Heroku link:** (https://sagemodeboy.herokuapp.com/)
+### Heroku link: (https://sagemodeboy.herokuapp.com/)
 
 ## Getting Started
 
@@ -14,7 +12,7 @@ Follow instructions to install the latest version of python for your platform in
 
 #### PIP Dependencies
 
-Once you have your virtual environment setup and running, install dependencies by naviging to the `/Capstone Project` directory and running:
+Once you have your virtual environment setup and running, install dependencies by running:
 
 ```
 pip install -r requirements.txt
@@ -30,7 +28,7 @@ To run the server, execute:
 source setup.sh
 ```
 
-## Retail Agency Specifications
+## Retail Agency Description
 
 The Retail Agency models a company that is responsible for selling clients' houses and managing and assigning agents to those houses. You are an Executive Producer within the company and are creating a system to simplify and streamline your process.
 
@@ -51,15 +49,15 @@ In the `setup.sh` file, you will find:
 
 ## Roles
 
-### CAPSTONE USER
+### USER
 
 - get:agents
 - get:houses
 - get:jobs
 
-### CAPSTONE MANAGER
+### MANAGER
 
-#####  All permissions a capstone user has
+#####  All permissions a user has
 - post:houses
 - post:jobs
 - put:agents
@@ -67,9 +65,9 @@ In the `setup.sh` file, you will find:
 - put:jobs
 - delete:jobs
 
-### CAPSTONE ADMIN
+### ADMIN
 
-##### All permissions a capstone manager has
+##### All permissions a manager has
 - delete:agents
 - delete:houses
 - post:agents
