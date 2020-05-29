@@ -24,7 +24,7 @@ $('#call-jobs').on('click', function () {
 
 function openUrl(url) {
   var req = new XMLHttpRequest();
-  req.open('GET', "https://sagemodeboy.herokuapp.com/"+url, true); //true means request will be async
+  req.open('GET', "http://127.0.0.1:5000/"+url, true); //true means request will be async
   req.onreadystatechange = function (aEvt) {
     if (req.readyState == 4) {
       if (req.status == 200)
@@ -47,5 +47,5 @@ function openUrl(url) {
 function logout() {
   window.localStorage.setItem('access_token','null');
   console.log(window.localStorage.getItem('access_token'));
-  window.location.href ='https://sagemodeboy.eu.auth0.com/v2/logout';
+  window.location.href ='https://sagemodeboy.eu.auth0.com/v2/logout?returnTo=http://127.0.0.1:5000/';
 }
