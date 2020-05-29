@@ -4,7 +4,7 @@
 #### Warning:
  for security purposes, admin and manager access have been disabled which means you cannot add, update or delete any entities within the app, if you want to try, contact me after signing up to the app and i'll give you temporary access.
  * Current login access:
-   mail: adming@mail.io
+   mail: admin@mail.io
    password: Capstone2020
 
 ### Landing page screenshot:
