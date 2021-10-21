@@ -3,7 +3,7 @@ aniso8601==8.0.0
 appdirs==1.4.3
 atomicwrites==1.4.0
 attrs==19.3.0
-Babel==2.8.0
+Babel==2.9.1
 click==7.1.1
 colorama==0.4.3
 distlib==0.3.0
